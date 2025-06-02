@@ -35,9 +35,17 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     TH1D* hNcoll =  new TH1D("hNcoll", "Number of Binary Collisions", 75, 0, 75);
     TH1D* hhiBin =  new TH1D("hhiBin", "Centrality Bin", 200, 0, 200);
     TH1D* hhiHF_pf =new TH1D("hhiHF_pf", "HF Energy Density", 100, 0, 650);
+    TH1D* hTrkPhi = new TH1D("hTrkPhi", "Track Phi", 100, -3.14, 3.14);
+    TH1D* hTrkCharge = new TH1D("hTrkCharge", "Track Charge", 3, -1.5, 1.5);
+    TH1D* hTrkNHits = new TH1D("hTrkNHits", "Track Number of Hits", 100, 0, 100);
+    TH1D* hTrkNPixHits = new TH1D("hTrkNPixHits", "Track Number of Pixel Hits", 100, 0, 100);
+    TH1D* hTrkNLayers = new TH1D("hTrkNLayers", "Track Number of Layers", 10, 0, 10);
+    TH1D* hTrkNormChi2 = new TH1D("hTrkNormChi2", "Track Normalized Chi2", 100, 0, 10);
+    TH1D* hpfEnergy = new TH1D("hpfEnergy", "PF Energy", 100, 0, 100);
 
     TH3D* VXYZ = new TH3D("VXYZ", "Best Vertex XYZ", 50, -0.1, 0.1, 50, -0.1, 0.1, 50, -25, 25);
-    TH3D* VXYZErr = new TH3D("VXYZErr", "Best Vertex XYZ Error", 50, -0.1, 0.1, 50, -0.1, 0.1, 50, -10, 10);
+    TH3D* VXYZErr = new TH3D("VXYZErr", "Best Vertex XYZ Error", 50, 0, 0.02, 50, 0, 0.02, 50, 0, 0.01);
+    TH3D* htrkPtEtaHighPurity = new TH3D("trkPtEtaHighPurity", "Track pT vs Eta vs High Purity", 70, 0, 5, 100, -4, 4, 2, -0.5, 1.5);
 
     // Define branch variables
     TTree *tree;
@@ -51,7 +59,10 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     std::vector<float> *ptSumVtx = nullptr, *xVtx = nullptr, *yVtx = nullptr, *zVtx = nullptr;
     std::vector<float> *xErrVtx = nullptr, *yErrVtx = nullptr, *zErrVtx = nullptr;
 
-    std::vector<float> *trkPt = nullptr;
+    std::vector<float> *trkPt = nullptr, *trkEta = nullptr, *highPurity = nullptr, 
+                        *trkPhi = nullptr, *trkCharge = nullptr, *trkNHits = nullptr,
+                        *trkNPixHits = nullptr, *trkNLayers = nullptr, *trkNormChi2 = nullptr,
+                        *pfEnergy = nullptr;
 
     // if forest, get forest
     if (isForest) {
@@ -81,6 +92,18 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->SetBranchAddress("yErrVtx", &yErrVtx);
         tree->SetBranchAddress("zErrVtx", &zErrVtx);
 
+        // track-level
+        tree->SetBranchAddress("trkPt", &trkPt);
+        tree->SetBranchAddress("trkEta", &trkEta);
+        tree->SetBranchAddress("highPurity", &highPurity);
+        tree->SetBranchAddress("trkPhi", &trkPhi);
+        tree->SetBranchAddress("trkCharge", &trkCharge);
+        tree->SetBranchAddress("trkNHits", &trkNHits);
+        tree->SetBranchAddress("trkNPixHits", &trkNPixHits);
+        tree->SetBranchAddress("trkNLayers", &trkNLayers);
+        tree->SetBranchAddress("trkNormChi2", &trkNormChi2);
+        tree->SetBranchAddress("pfEnergy", &pfEnergy);
+
     } // if just skim
     else {
         tree = (TTree*)finput->Get("Tree");
@@ -107,6 +130,15 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         
         // track-level
         tree->SetBranchAddress("trkPt", &trkPt);
+        tree->SetBranchAddress("trkEta", &trkEta);
+        tree->SetBranchAddress("highPurity", &highPurity);
+        tree->SetBranchAddress("trkPhi", &trkPhi);
+        tree->SetBranchAddress("trkCharge", &trkCharge);
+        tree->SetBranchAddress("trkNHits", &trkNHits);
+        tree->SetBranchAddress("trkNPixHits", &trkNPixHits);
+        tree->SetBranchAddress("trkNLayers", &trkNLayers);
+        tree->SetBranchAddress("trkNormChi2", &trkNormChi2);
+        tree->SetBranchAddress("pfEnergy", &pfEnergy);
 
     }
 
@@ -173,6 +205,18 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
             VXYZ->Fill(VX, VY, VZ);
             VXYZErr->Fill(VXError, VYError, VZError);
         }
+
+        // loop over tracks
+        for (int j = 0; j < trkPt->size(); ++j) {
+            htrkPtEtaHighPurity->Fill(trkPt->at(j), trkEta->at(j), highPurity->at(j));
+            hTrkPhi->Fill(trkPhi->at(j));
+            hTrkCharge->Fill(trkCharge->at(j));
+            hTrkNHits->Fill(trkNHits->at(j));
+            hTrkNPixHits->Fill(trkNPixHits->at(j));
+            hTrkNLayers->Fill(trkNLayers->at(j));
+            hTrkNormChi2->Fill(trkNormChi2->at(j));
+            hpfEnergy->Fill(pfEnergy->at(j));
+        }
         
     }
 
@@ -189,6 +233,14 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     hhiHF_pf->Write();
     VXYZ->Write();
     VXYZErr->Write();
+    htrkPtEtaHighPurity->Write();
+    hTrkPhi->Write();
+    hTrkCharge->Write();
+    hTrkNHits->Write();
+    hTrkNPixHits->Write();
+    hTrkNLayers->Write();
+    hTrkNormChi2->Write();
+    hpfEnergy->Write();
     
     foutput->Close();
     finput->Close();

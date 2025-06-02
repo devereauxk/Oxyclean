@@ -440,6 +440,34 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     TH1D* hhiHF_pf_skim   = (TH1D*)fSkim->Get("hhiHF_pf");   hhiHF_pf_skim->SetName("hhiHF_pf_skim");
     std::vector<TH1D*> hhiHF_pf = { hhiHF_pf_forest, hhiHF_pf_skim };
 
+    TH1D* hTrkPhi_forest = (TH1D*)fForest->Get("hTrkPhi"); hTrkPhi_forest->SetName("hTrkPhi_forest");
+    TH1D* hTrkPhi_skim   = (TH1D*)fSkim->Get("hTrkPhi");   hTrkPhi_skim->SetName("hTrkPhi_skim");
+    std::vector<TH1D*> hTrkPhi = { hTrkPhi_forest, hTrkPhi_skim };
+
+    TH1D* hTrkCharge_forest = (TH1D*)fForest->Get("hTrkCharge"); hTrkCharge_forest->SetName("hTrkCharge_forest");
+    TH1D* hTrkCharge_skim   = (TH1D*)fSkim->Get("hTrkCharge");   hTrkCharge_skim->SetName("hTrkCharge_skim");
+    std::vector<TH1D*> hTrkCharge = { hTrkCharge_forest, hTrkCharge_skim };
+
+    TH1D* hTrkNHits_forest = (TH1D*)fForest->Get("hTrkNHits"); hTrkNHits_forest->SetName("hTrkNHits_forest");
+    TH1D* hTrkNHits_skim   = (TH1D*)fSkim->Get("hTrkNHits");   hTrkNHits_skim->SetName("hTrkNHits_skim");
+    std::vector<TH1D*> hTrkNHits = { hTrkNHits_forest, hTrkNHits_skim };
+
+    TH1D* hTrkNPixHits_forest = (TH1D*)fForest->Get("hTrkNPixHits"); hTrkNPixHits_forest->SetName("hTrkNPixHits_forest");
+    TH1D* hTrkNPixHits_skim   = (TH1D*)fSkim->Get("hTrkNPixHits");   hTrkNPixHits_skim->SetName("hTrkNPixHits_skim");
+    std::vector<TH1D*> hTrkNPixHits = { hTrkNPixHits_forest, hTrkNPixHits_skim };
+
+    TH1D* hTrkNLayers_forest = (TH1D*)fForest->Get("hTrkNLayers"); hTrkNLayers_forest->SetName("hTrkNLayers_forest");
+    TH1D* hTrkNLayers_skim   = (TH1D*)fSkim->Get("hTrkNLayers");   hTrkNLayers_skim->SetName("hTrkNLayers_skim");
+    std::vector<TH1D*> hTrkNLayers = { hTrkNLayers_forest, hTrkNLayers_skim };
+
+    TH1D* hTrkNormChi2_forest = (TH1D*)fForest->Get("hTrkNormChi2"); hTrkNormChi2_forest->SetName("hTrkNormChi2_forest");
+    TH1D* hTrkNormChi2_skim   = (TH1D*)fSkim->Get("hTrkNormChi2");   hTrkNormChi2_skim->SetName("hTrkNormChi2_skim");
+    std::vector<TH1D*> hTrkNormChi2 = { hTrkNormChi2_forest, hTrkNormChi2_skim };
+
+    TH1D* hpfEnergy_forest = (TH1D*)fForest->Get("hpfEnergy"); hpfEnergy_forest->SetName("hpfEnergy_forest");
+    TH1D* hpfEnergy_skim   = (TH1D*)fSkim->Get("hpfEnergy");   hpfEnergy_skim->SetName("hpfEnergy_skim");
+    std::vector<TH1D*> hpfEnergy = { hpfEnergy_forest, hpfEnergy_skim };
+
     // Fetch and uniquely name 3D histograms
     TH3D* VXYZ_forest = (TH3D*)fForest->Get("VXYZ"); VXYZ_forest->SetName("VXYZ_forest");
     TH3D* VXYZ_skim   = (TH3D*)fSkim->Get("VXYZ");   VXYZ_skim->SetName("VXYZ_skim");
@@ -448,6 +476,12 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     TH3D* VXYZErr_forest = (TH3D*)fForest->Get("VXYZErr"); VXYZErr_forest->SetName("VXYZErr_forest");
     TH3D* VXYZErr_skim   = (TH3D*)fSkim->Get("VXYZErr");   VXYZErr_skim->SetName("VXYZErr_skim");
     std::vector<TH3D*> VXYZErr = { VXYZErr_forest, VXYZErr_skim };
+
+    TH3D* htrkPtEtaHighPurity_forest = (TH3D*)fForest->Get("trkPtEtaHighPurity");
+    htrkPtEtaHighPurity_forest->SetName("trkPtEtaHighPurity_forest");
+    TH3D* htrkPtEtaHighPurity_skim   = (TH3D*)fSkim->Get("trkPtEtaHighPurity");
+    htrkPtEtaHighPurity_skim->SetName("trkPtEtaHighPurity_skim");
+    std::vector<TH3D*> htrkPtEtaHighPurity = { htrkPtEtaHighPurity_forest, htrkPtEtaHighPurity_skim };
 
     // Projections with unique names
     std::vector<TH1D*> VX = {
@@ -474,25 +508,55 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         (TH1D*)VXYZErr[0]->ProjectionZ("VZErr_forest"),
         (TH1D*)VXYZErr[1]->ProjectionZ("VZErr_skim")
     };
+    std::vector<TH1D*> htrkPt = {
+        (TH1D*)htrkPtEtaHighPurity[0]->ProjectionX("trkPt_forest"),
+        (TH1D*)htrkPtEtaHighPurity[1]->ProjectionX("trkPt_skim")
+    };
+    std::vector<TH1D*> htrkEta = {
+        (TH1D*)htrkPtEtaHighPurity[0]->ProjectionY("trkEta_forest"),
+        (TH1D*)htrkPtEtaHighPurity[1]->ProjectionY("trkEta_skim")
+    };
+    std::vector<TH1D*> hhighPurity = {
+        (TH1D*)htrkPtEtaHighPurity[0]->ProjectionZ("highPurity_forest"),
+        (TH1D*)htrkPtEtaHighPurity[1]->ProjectionZ("highPurity_skim")
+    };
+    // Project trkPt for |eta| < 1 and highPurity bin centered at 1
+    int eta_min_bin = htrkPtEtaHighPurity[0]->GetYaxis()->FindBin(-1.0 + 1e-6);
+    int eta_max_bin = htrkPtEtaHighPurity[0]->GetYaxis()->FindBin(1.0 - 1e-6);
+    int purity_bin = htrkPtEtaHighPurity[0]->GetZaxis()->FindBin(1.0);
+
+    std::vector<TH1D*> htrkPt_eta1 = {
+        (TH1D*)htrkPtEtaHighPurity[0]->ProjectionX("trkPt_Eta1_forest", eta_min_bin, eta_max_bin, 0, -1),
+        (TH1D*)htrkPtEtaHighPurity[1]->ProjectionX("trkPt_Eta1_skim", eta_min_bin, eta_max_bin, 0, -1)
+    };
+    std::vector<TH1D*> htrkPt_highPurity = {
+        (TH1D*)htrkPtEtaHighPurity[0]->ProjectionX("trkPt_highPurity_forest", 0, -1, purity_bin, purity_bin),
+        (TH1D*)htrkPtEtaHighPurity[1]->ProjectionX("trkPt_highPurity_skim", 0, -1, purity_bin, purity_bin)
+    };
+
+    std::vector<TH1D*> htrkPt_eta1_highPurity = {
+        (TH1D*)htrkPtEtaHighPurity[0]->ProjectionX("trkPt_Eta1_highPurity_forest", eta_min_bin, eta_max_bin, purity_bin, purity_bin),
+        (TH1D*)htrkPtEtaHighPurity[1]->ProjectionX("trkPt_Eta1_highPurity_skim", eta_min_bin, eta_max_bin, purity_bin, purity_bin)
+    };
 
 
     // make canvas
-    TCanvas* c1 = new TCanvas("c1", "c1", 2400, 3000);
-    c1->Divide(3, 5);
+    TCanvas* c1 = new TCanvas("c1", "c1", 2400, 6000);
+    c1->Divide(3, 10);
 
     c1->cd(1);
     plotSimple(
-        hNEvtPassCuts, "hNEvtPassCuts", labels,
-        "hNEvtPassCuts", -1, -1,
-        "Counts", 35000, 36500,
+        hNEvtPassCuts, "NEvtPassCuts", labels,
+        "NEvtPassCuts", -1, -1,
+        "Counts", 0.97e6, 1e6,
         false, false,
         true
     );
 
     c1->cd(2);
     plotSimple(
-        hNRun, "hNRun", labels,
-        "hNRun", -1, -1,
+        hNRun, "NRun", labels,
+        "NRun", -1, -1,
         "Counts", -1, -1,
         false, false
     );
@@ -509,48 +573,50 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
 
     c1->cd(4);
     plotSimple(
-        hNLumi, "hNLumi", labels,
-        "hNLumi", -1, -1,
-        "Counts", -1, -1,
+        hNLumi, "NLumi", labels,
+        "NLumi", -1, -1,
+        "Counts", 17000, 21000,
         false, false
     );
 
     c1->cd(5);
     plotSimple(
-        hNVtx, "hNVtx", labels,
-        "hNVtx", -1, -1,
+        hNVtx, "NVtx", labels,
+        "NVtx", -1, -1,
         "Counts", -1, -1,
         false, false
     );
 
     c1->cd(6);
     plotSimple(
-        hNpart, "hNpart", labels,
-        "hNpart", -1, -1,
+        hNpart, "Npart", labels,
+        "Npart", -1, -1,
         "Counts", -1, -1,
         false, false
     );
 
     c1->cd(7);
     plotSimple(
-        hNcoll, "hNcoll", labels,
-        "hNcoll", -1, -1,
+        hNcoll, "Ncoll", labels,
+        "Ncoll", -1, -1,
         "Counts", -1, -1,
         false, false
     );
 
+    /*
     c1->cd(8);
     plotSimple(
-        hhiBin, "hhiBin", labels,
-        "hhiBin", -1, -1,
+        hhiBin, "hiBin", labels,
+        "hiBin", -1, -1,
         "Counts", -1, -1,
         false, false
     );
+    */
 
     c1->cd(9);
     plotSimple(
-        hhiHF_pf, "hhiHF_pf", labels,
-        "hhiHF_pf", -1, -1,
+        hhiHF_pf, "hiHF_pf", labels,
+        "hiHF_pf", -1, -1,
         "Counts", -1, -1,
         false, false
     );
@@ -582,7 +648,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c1->cd(13);
     plotSimple(
         VXErr, "VXErr", labels,
-        "X [cm]", -0.02, 0.1,
+        "X [cm]", -1, -1,
         "Counts", -1, -1,
         false, false
     );
@@ -590,7 +656,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c1->cd(14);
     plotSimple(
         VYErr, "VYErr", labels,
-        "Y [cm]", -0.6, -0.6,
+        "Y [cm]", -1, -1,
         "Counts", -1, -1,
         false, false
     );
@@ -603,7 +669,111 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
+    c1->cd(16);
+    plotSimple(
+        htrkPt, "trkPt", labels,
+        "p_{T} [GeV/c]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
 
+    c1->cd(17);
+    plotSimple(
+        htrkEta, "trkEta", labels,
+        "#eta", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(18);
+    plotSimple(
+        hhighPurity, "highPurity", labels,
+        "High Purity Tracks", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(19);
+    plotSimple(
+        htrkPt_eta1, "trkPt_Eta1", labels,
+        "p_{T} [GeV/c]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(20);
+    plotSimple(
+        htrkPt_highPurity, "trkPt_highPurity", labels,
+        "p_{T} [GeV/c]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(21);
+    plotSimple(
+        htrkPt_eta1_highPurity, "trkPt_Eta1_highPurity", labels,
+        "p_{T} [GeV/c]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(22);
+    plotSimple(
+        hTrkPhi, "TrkPhi", labels,
+        "#phi", -3.2, 3.2,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(23);
+    plotSimple(
+        hTrkCharge, "TrkCharge", labels,
+        "Charge", -2, 2,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(24);
+    plotSimple(
+        hTrkNHits, "TrkNHits", labels,
+        "Number of Hits", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(25);
+    plotSimple(
+        hTrkNPixHits, "TrkNPixHits", labels,
+        "Number of Pixel Hits", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(26);
+    plotSimple(
+        hTrkNLayers, "TrkNLayers", labels,
+        "Number of Layers", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(27);
+    plotSimple(
+        hTrkNormChi2, "TrkNormChi2", labels,
+        "Normalized #chi^{2}", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c1->cd(28);
+    plotSimple(
+        hpfEnergy, "pfEnergy", labels,
+        "PF Energy [GeV]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    
     // Save as png
     c1->SaveAs(Form("%s", output));
 }
