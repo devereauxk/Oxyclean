@@ -11,7 +11,8 @@
 void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG.root", 
                     const char* outputFile = "skimValidation.root",
                     bool isForest = true,
-                    bool applyCuts = true) {
+                    bool applyEventCuts = true,
+                    bool applyTrackCuts = true) {
 
     // Open the input ROOT file
     TFile* finput = TFile::Open(inputFile, "READ");
@@ -27,29 +28,29 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     hNEvtPassCuts->GetXaxis()->SetBinLabel(3, "CC+PV Filter");
     hNEvtPassCuts->GetXaxis()->SetBinLabel(4, "CC+PV+nVtx>0 Filter");
 
-    TH1D* hnRun =   new TH1D("hnRun", "Run Number", 10, 0, 10);
-    TH1D* hnEv =    new TH1D("hnEv", "Event Number", 50, 0, 100);
-    TH1D* hnLumi =  new TH1D("hnLumi", "Lumi Section", 50, 0, 1000);
-    TH1D* hnVtx =   new TH1D("hnVtx", "Number of Vertices", 10, 0, 10);
-    TH1D* hNpart =  new TH1D("hNpart", "Number of Participants", 50, 0, 50);
-    TH1D* hNcoll =  new TH1D("hNcoll", "Number of Binary Collisions", 75, 0, 75);
-    TH1D* hhiBin =  new TH1D("hhiBin", "Centrality Bin", 200, 0, 200);
-    TH1D* hhiHF_pf =new TH1D("hhiHF_pf", "HF Energy Density", 100, 0, 650);
-    TH1D* hTrkPhi = new TH1D("hTrkPhi", "Track Phi", 100, -3.14, 3.14);
-    TH1D* hTrkCharge = new TH1D("hTrkCharge", "Track Charge", 3, -1.5, 1.5);
-    TH1D* hTrkNHits = new TH1D("hTrkNHits", "Track Number of Hits", 50, 0, 50);
-    TH1D* hTrkNPixHits = new TH1D("hTrkNPixHits", "Track Number of Pixel Hits", 50, 0, 20);
-    TH1D* hTrkNLayers = new TH1D("hTrkNLayers", "Track Number of Layers", 16, -0.5, 15.5);
-    TH1D* hTrkNormChi2 = new TH1D("hTrkNormChi2", "Track Normalized Chi2", 100, 0, 10);
-    TH1D* hpfEnergy = new TH1D("hpfEnergy", "PF Energy", 50, 0, 30);
-    TH1D* hHFEMaxPlus = new TH1D("hHFEMaxPlus", "HF E Max Plus", 100, 0, 100);
-    TH1D* hHFEMaxPlus2 = new TH1D("hHFEMaxPlus2", "HF E Max Plus 2", 100, 0, 100);
-    TH1D* hHFEMaxPlus3 = new TH1D("hHFEMaxPlus3", "HF E Max Plus 3", 100, 0, 100);
-    TH1D* hHFEMaxMinus = new TH1D("hHFEMaxMinus", "HF E Max Minus", 100, 0, 100);
-    TH1D* hHFEMaxMinus2 = new TH1D("hHFEMaxMinus2", "HF E Max Minus 2", 100, 0, 100);
-    TH1D* hHFEMaxMinus3 = new TH1D("hHFEMaxMinus3", "HF E Max Minus 3", 100, 0, 100);
+    TH1D* hnRun =           new TH1D("hnRun", "Run Number", 10, 0, 10);
+    TH1D* hnEv =            new TH1D("hnEv", "Event Number", 50, 0, 100);
+    TH1D* hnLumi =          new TH1D("hnLumi", "Lumi Section", 50, 0, 1000);
+    TH1D* hnVtx =           new TH1D("hnVtx", "Number of Vertices", 10, 0, 10);
+    TH1D* hNpart =          new TH1D("hNpart", "Number of Participants", 50, 0, 50);
+    TH1D* hNcoll =          new TH1D("hNcoll", "Number of Binary Collisions", 75, 0, 75);
+    TH1D* hhiBin =          new TH1D("hhiBin", "Centrality Bin", 200, 0, 200);
+    TH1D* hhiHF_pf =        new TH1D("hhiHF_pf", "HF Energy Density", 100, 0, 650);
+    TH1D* hTrkPhi =         new TH1D("hTrkPhi", "Track Phi", 100, -3.14, 3.14);
+    TH1D* hTrkCharge =      new TH1D("hTrkCharge", "Track Charge", 3, -1.5, 1.5);
+    TH1D* hTrkNHits =       new TH1D("hTrkNHits", "Track Number of Hits", 50, 0, 50);
+    TH1D* hTrkNPixHits =    new TH1D("hTrkNPixHits", "Track Number of Pixel Hits", 50, 0, 20);
+    TH1D* hTrkNLayers =     new TH1D("hTrkNLayers", "Track Number of Layers", 16, -0.5, 15.5);
+    TH1D* hTrkNormChi2 =    new TH1D("hTrkNormChi2", "Track Normalized Chi2", 100, 0, 10);
+    TH1D* hpfEnergy =       new TH1D("hpfEnergy", "PF Energy", 50, 0, 30);
+    TH1D* hHFEMaxPlus =     new TH1D("hHFEMaxPlus", "HF E Max Plus", 100, 0, 100);
+    TH1D* hHFEMaxPlus2 =    new TH1D("hHFEMaxPlus2", "HF E Max Plus 2", 100, 0, 100);
+    TH1D* hHFEMaxPlus3 =    new TH1D("hHFEMaxPlus3", "HF E Max Plus 3", 100, 0, 100);
+    TH1D* hHFEMaxMinus =    new TH1D("hHFEMaxMinus", "HF E Max Minus", 100, 0, 100);
+    TH1D* hHFEMaxMinus2 =   new TH1D("hHFEMaxMinus2", "HF E Max Minus 2", 100, 0, 100);
+    TH1D* hHFEMaxMinus3 =   new TH1D("hHFEMaxMinus3", "HF E Max Minus 3", 100, 0, 100);
 
-    TH3D* VXYZ = new TH3D("VXYZ", "Best Vertex XYZ", 50, -0.1, 0.1, 50, -0.1, 0.1, 50, -25, 25);
+    TH3D* VXYZ =    new TH3D("VXYZ", "Best Vertex XYZ", 50, -0.1, 0.1, 50, -0.1, 0.1, 50, -25, 25);
     TH3D* VXYZErr = new TH3D("VXYZErr", "Best Vertex XYZ Error", 50, 0, 0.02, 50, 0, 0.02, 50, 0, 0.01);
     TH3D* htrkPtEtaHighPurity = new TH3D("trkPtEtaHighPurity", "Track pT vs Eta vs High Purity", 70, 0, 5, 100, -4, 4, 2, -0.5, 1.5);
 
@@ -66,11 +67,12 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     std::vector<float> *ptSumVtx = nullptr, *xVtx = nullptr, *yVtx = nullptr, *zVtx = nullptr;
     std::vector<float> *xErrVtx = nullptr, *yErrVtx = nullptr, *zErrVtx = nullptr;
 
-    std::vector<float> *trkPt = nullptr, *trkEta = nullptr, *highPurity = nullptr, 
+    std::vector<float>  *trkPt = nullptr, *trkEta = nullptr, *highPurity = nullptr, 
                         *trkPhi = nullptr, *trkCharge = nullptr, *trkNHits = nullptr,
                         *trkNPixHits = nullptr, *trkNLayers = nullptr, *trkNormChi2 = nullptr,
-                        *pfEnergy = nullptr;
-    std::vector<int> *trkPDGId = nullptr;
+                        *pfEnergy = nullptr,
+                        *pfE = nullptr, *pfEta = nullptr;
+    std::vector<int>    *pfId = nullptr;
 
     // if forest, get forest
     if (isForest) {
@@ -78,6 +80,7 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->AddFriend("skimanalysis/HltTree"); // Add the skim tree as a friend
         tree->AddFriend("hiEvtAnalyzer/HiTree"); // Add the event tree as a friend
         tree->AddFriend("ppTracks/trackTree");   // Add the track tree as a friend
+        tree->AddFriend("particleFlowAnalyser/pftree"); // Add the particle flow tree as a friend
 
         // event-level
         tree->SetBranchAddress("nRun", &nRun);
@@ -111,7 +114,9 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->SetBranchAddress("trkNLayers", &trkNLayers);
         tree->SetBranchAddress("trkNormChi2", &trkNormChi2);
         tree->SetBranchAddress("pfEnergy", &pfEnergy);
-        tree->SetBranchAddress("trkPDGId", &trkPDGId);
+        tree->SetBranchAddress("pfId", &pfId);
+        tree->SetBranchAddress("pfE", &pfE);
+        tree->SetBranchAddress("pfEta", &pfEta);
 
     } // if just skim
     else {
@@ -188,7 +193,7 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         }
 
         // apply cuts if requested
-        if (applyCuts && !passedCuts) continue;
+        if (applyEventCuts && !passedCuts) continue;
 
         hnRun->Fill(nRun);
         isForest ? hnEv->Fill(nEv) : hnEv->Fill(Event);
@@ -223,6 +228,10 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         // loop over tracks
         for (int j = 0; j < trkPt->size(); ++j) {
             htrkPtEtaHighPurity->Fill(trkPt->at(j), trkEta->at(j), highPurity->at(j));
+
+            // apply track cuts
+            if (applyTrackCuts && highPurity->at(j) < 1) continue;
+
             hTrkPhi->Fill(trkPhi->at(j));
             hTrkCharge->Fill(trkCharge->at(j));
             hTrkNHits->Fill(trkNHits->at(j));
@@ -240,46 +249,46 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
             HFEMaxMinus = 0;
             HFEMaxMinus2 = 0;
             HFEMaxMinus3 = 0;
-            for (int j = 0; j < pfEnergy->size(); ++j) {
+            for (int j = 0; j < pfId->size(); ++j) {
 
                 // check if is PF Candidate
-                if (trkEta->at(j) < 3 || trkEta->at(j) > 6) continue;
-                if (trkPDGId->at(j) != 1 && trkPDGId->at(j) != 2) continue;
+                float absEta = abs(pfEta->at(j));
+                if (absEta < 3 || absEta > 5.2) continue;
 
                 // compare to current 1st 2nd 3rd candidates
                 // minus HFEMax corresponds with negative rapidity
                 // plus HFEMax corresponds with positive rapidity
-                if (trkEta->at(j) < 0) { // HF Minus
-                    if (pfEnergy->at(j) > HFEMaxMinus) {
+                if (pfEta->at(j) < 0) { // HF Minus
+                    if (pfE->at(j) > HFEMaxMinus) {
                         HFEMaxMinus3 = HFEMaxMinus2;
                         HFEMaxMinus2 = HFEMaxMinus;
-                        HFEMaxMinus = pfEnergy->at(j);
-                    } else if (pfEnergy->at(j) > HFEMaxMinus2) {
+                        HFEMaxMinus = pfE->at(j);
+                    } else if (pfE->at(j) > HFEMaxMinus2) {
                         HFEMaxMinus3 = HFEMaxMinus2;
-                        HFEMaxMinus2 = pfEnergy->at(j);
-                    } else if (pfEnergy->at(j) > HFEMaxMinus3) {
-                        HFEMaxMinus3 = pfEnergy->at(j);
+                        HFEMaxMinus2 = pfE->at(j);
+                    } else if (pfE->at(j) > HFEMaxMinus3) {
+                        HFEMaxMinus3 = pfE->at(j);
                     }
                 } else {
-                    if (pfEnergy->at(j) > HFEMaxPlus) {
+                    if (pfE->at(j) > HFEMaxPlus) {
                         HFEMaxPlus3 = HFEMaxPlus2;
                         HFEMaxPlus2 = HFEMaxPlus;
-                        HFEMaxPlus = pfEnergy->at(j);
-                    } else if (pfEnergy->at(j) > HFEMaxPlus2) {
+                        HFEMaxPlus = pfE->at(j);
+                    } else if (pfE->at(j) > HFEMaxPlus2) {
                         HFEMaxPlus3 = HFEMaxPlus2;
-                        HFEMaxPlus2 = pfEnergy->at(j);
-                    } else if (pfEnergy->at(j) > HFEMaxPlus3) {
-                        HFEMaxPlus3 = pfEnergy->at(j);
+                        HFEMaxPlus2 = pfE->at(j);
+                    } else if (pfE->at(j) > HFEMaxPlus3) {
+                        HFEMaxPlus3 = pfE->at(j);
                     }
                 }
             }
         }
-        hHFEMaxPlus->Fill(HFEMaxPlus);
-        hHFEMaxPlus2->Fill(HFEMaxPlus2);
-        hHFEMaxPlus3->Fill(HFEMaxPlus3);
-        hHFEMaxMinus->Fill(HFEMaxMinus);
-        hHFEMaxMinus2->Fill(HFEMaxMinus2);
-        hHFEMaxMinus3->Fill(HFEMaxMinus3);
+        if (HFEMaxPlus > 0)     hHFEMaxPlus->Fill(HFEMaxPlus);
+        if (HFEMaxPlus2 > 0)    hHFEMaxPlus2->Fill(HFEMaxPlus2);
+        if (HFEMaxPlus3 > 0)    hHFEMaxPlus3->Fill(HFEMaxPlus3);
+        if (HFEMaxMinus > 0)    hHFEMaxMinus->Fill(HFEMaxMinus);
+        if (HFEMaxMinus2 > 0)   hHFEMaxMinus2->Fill(HFEMaxMinus2);
+        if (HFEMaxMinus3 > 0)   hHFEMaxMinus3->Fill(HFEMaxMinus3);
         
     }
 

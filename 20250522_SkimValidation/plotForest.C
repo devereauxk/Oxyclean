@@ -250,144 +250,10 @@ void plotSimple(vector<TH1D*> hists, const char* title, vector<string> labels,
     leg->Draw("SAME");
 }
 
-// example usage
-// root -l -b -q "plotForest.C(\"skimValidation.root\", \"plots\")"
-// root -l -b -q "plotForest.C(\"skimValidation_cut.root\", \"plots\", \"cut\")"
-
-/*
-void plotForestOnly(const char* input="skimValidation.root", const char* outputDir="plots", const char* suffix="cut") {
-
-    // Open the input ROOT file
-    TFile* finput = TFile::Open(input, "READ");
-    if (!finput || finput->IsZombie()) {
-        std::cerr << "Error: Unable to open file " << input << std::endl;
-        return;
-    }
-
-    // Read in histograms
-    TH1D* hNEvtPassCuts = (TH1D*)finput->Get("hNEvtPassCuts");
-    TH1D* hNRun = (TH1D*)finput->Get("hnRun");
-    TH1D* hNEvt = (TH1D*)finput->Get("hnEv");
-    TH1D* hNLumi = (TH1D*)finput->Get("hnLumi");
-    TH1D* hNVtx = (TH1D*)finput->Get("hnVtx");
-    TH1D* hNpart = (TH1D*)finput->Get("hNpart");
-    TH1D* hNcoll = (TH1D*)finput->Get("hNcoll");
-    TH1D* hhiBin = (TH1D*)finput->Get("hhiBin");
-    TH1D* hhiHF_pf = (TH1D*)finput->Get("hhiHF_pf");
-
-    TH3D* bestVertexXYZ = (TH3D*)finput->Get("bestVertexXYZ");
-    TH3D* bestVertexXYZErr = (TH3D*)finput->Get("bestVertexXYZErr");
-
-    // make canvas
-    TCanvas* c1 = new TCanvas("c1", "c1", 2400, 2400);
-    c1->Divide(3, 4);
-
-    c1->cd(1);
-    plotSimple(
-        hNEvtPassCuts, "hNEvtPassCuts",
-        "hNEvtPassCuts", -1, -1,
-        "Counts", 35000, 36500,
-        false, false,
-        true
-    );
-
-    c1->cd(2);
-    plotSimple(
-        hNRun, "hNRun",
-        "hNRun", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(3);
-    plotSimple(
-        hNEvt, "hNEvt",
-        "hNEvt", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(4);
-    plotSimple(
-        hNLumi, "hNLumi",
-        "hNLumi", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(5);
-    plotSimple(
-        hNVtx, "hNVtx",
-        "hNVtx", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(6);
-    plotSimple(
-        hNpart, "hNpart",
-        "hNpart", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(7);
-    plotSimple(
-        hNcoll, "hNcoll",
-        "hNcoll", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(8);
-    plotSimple(
-        hhiBin, "hhiBin",
-        "hhiBin", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(9);
-    plotSimple(
-        hhiHF_pf, "hhiHF_pf",
-        "hhiHF_pf", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(10);
-    plotSimple(
-        bestVertexXYZ->ProjectionX("bestVertexXYX_x"), "bestVertexX",
-        "X [cm]", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(11);
-    plotSimple(
-        bestVertexXYZ->ProjectionY("bestVertexXYX_y"), "bestVertexY",
-        "Y [cm]", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    c1->cd(12);
-    plotSimple(
-        bestVertexXYZ->ProjectionZ("bestVertexXYX_z"), "bestVertexZ",
-        "Z [cm]", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-
-    // Save as png
-    c1->SaveAs(Form("%s/forest-%s.png", outputDir, suffix));
-}
-*/
 
 void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
                 const char* skimInput =     "output/skimValidation_skim.root",
-                const char* output =        "plots/forest_and_skim.png") {
+                const char* output =        "plots/forest_and_skim") {
 
     // Open the input ROOT files
     TFile* fForest = TFile::Open(forestInput, "READ");
@@ -468,6 +334,38 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     TH1D* hpfEnergy_skim   = (TH1D*)fSkim->Get("hpfEnergy");   hpfEnergy_skim->SetName("hpfEnergy_skim");
     std::vector<TH1D*> hpfEnergy = { hpfEnergy_forest, hpfEnergy_skim };
 
+    TH1D* hHFEMaxPlus_forest = (TH1D*)fForest->Get("hHFEMaxPlus"); hHFEMaxPlus_forest->SetName("hHFEMaxPlus_forest");
+    TH1D* hHFEMaxPlus_skim   = (TH1D*)fSkim->Get("hHFEMaxPlus");   hHFEMaxPlus_skim->SetName("hHFEMaxPlus_skim");
+    std::vector<TH1D*> hHFEMaxPlus = { hHFEMaxPlus_forest, hHFEMaxPlus_skim };
+
+    TH1D* hHFEMaxPlus2_forest = (TH1D*)fForest->Get("hHFEMaxPlus2");
+    hHFEMaxPlus2_forest->SetName("hHFEMaxPlus2_forest");
+    TH1D* hHFEMaxPlus2_skim   = (TH1D*)fSkim->Get("hHFEMaxPlus2");
+    hHFEMaxPlus2_skim->SetName("hHFEMaxPlus2_skim");
+    std::vector<TH1D*> hHFEMaxPlus2 = { hHFEMaxPlus2_forest, hHFEMaxPlus2_skim };
+    
+    TH1D* hHFEMaxPlus3_forest = (TH1D*)fForest->Get("hHFEMaxPlus3");
+    hHFEMaxPlus3_forest->SetName("hHFEMaxPlus3_forest");
+    TH1D* hHFEMaxPlus3_skim   = (TH1D*)fSkim->Get("hHFEMaxPlus3");
+    hHFEMaxPlus3_skim->SetName("hHFEMaxPlus3_skim");
+    std::vector<TH1D*> hHFEMaxPlus3 = { hHFEMaxPlus3_forest, hHFEMaxPlus3_skim };
+
+    TH1D* hHFEMaxMinus_forest = (TH1D*)fForest->Get("hHFEMaxMinus"); hHFEMaxMinus_forest->SetName("hHFEMaxMinus_forest");
+    TH1D* hHFEMaxMinus_skim   = (TH1D*)fSkim->Get("hHFEMaxMinus");   hHFEMaxMinus_skim->SetName("hHFEMaxMinus_skim");
+    std::vector<TH1D*> hHFEMaxMinus = { hHFEMaxMinus_forest, hHFEMaxMinus_skim };
+
+    TH1D* hHFEMaxMinus2_forest = (TH1D*)fForest->Get("hHFEMaxMinus2");
+    hHFEMaxMinus2_forest->SetName("hHFEMaxMinus2_forest");
+    TH1D* hHFEMaxMinus2_skim   = (TH1D*)fSkim->Get("hHFEMaxMinus2");
+    hHFEMaxMinus2_skim->SetName("hHFEMaxMinus2_skim");
+    std::vector<TH1D*> hHFEMaxMinus2 = { hHFEMaxMinus2_forest, hHFEMaxMinus2_skim };
+
+    TH1D* hHFEMaxMinus3_forest = (TH1D*)fForest->Get("hHFEMaxMinus3");
+    hHFEMaxMinus3_forest->SetName("hHFEMaxMinus3_forest");
+    TH1D* hHFEMaxMinus3_skim   = (TH1D*)fSkim->Get("hHFEMaxMinus3");
+    hHFEMaxMinus3_skim->SetName("hHFEMaxMinus3_skim");
+    std::vector<TH1D*> hHFEMaxMinus3 = { hHFEMaxMinus3_forest, hHFEMaxMinus3_skim };
+
     // Fetch and uniquely name 3D histograms
     TH3D* VXYZ_forest = (TH3D*)fForest->Get("VXYZ"); VXYZ_forest->SetName("VXYZ_forest");
     TH3D* VXYZ_skim   = (TH3D*)fSkim->Get("VXYZ");   VXYZ_skim->SetName("VXYZ_skim");
@@ -538,11 +436,15 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         (TH1D*)htrkPtEtaHighPurity[0]->ProjectionX("trkPt_Eta1_highPurity_forest", eta_min_bin, eta_max_bin, purity_bin, purity_bin),
         (TH1D*)htrkPtEtaHighPurity[1]->ProjectionX("trkPt_Eta1_highPurity_skim", eta_min_bin, eta_max_bin, purity_bin, purity_bin)
     };
+    std::vector<TH1D*> htrkEta_highPurity = {
+        (TH1D*)htrkPtEtaHighPurity[0]->ProjectionY("trkEta_highPurity_forest", 0, -1, purity_bin, purity_bin),
+        (TH1D*)htrkPtEtaHighPurity[1]->ProjectionY("trkEta_highPurity_skim", 0, -1, purity_bin, purity_bin)
+    };
 
 
     // make canvas
-    TCanvas* c1 = new TCanvas("c1", "c1", 2400, 6000);
-    c1->Divide(3, 10);
+    TCanvas* c1 = new TCanvas("c1", "c1", 2400, 5400);
+    c1->Divide(3, 8);
 
     c1->cd(1);
     plotSimple(
@@ -603,15 +505,13 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    /*
     c1->cd(8);
     plotSimple(
-        hhiBin, "hiBin", labels,
-        "hiBin", -1, -1,
+        hpfEnergy, "pfEnergy", labels,
+        "PF Energy [GeV]", -1, -1,
         "Counts", -1, -1,
         false, false
     );
-    */
 
     c1->cd(9);
     plotSimple(
@@ -717,7 +617,70 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(22);
+    c1->cd(23);
+    plotSimple(
+        htrkEta_highPurity, "trkEta_highPurity", labels,
+        "#eta", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    
+    // Save as png
+    c1->SaveAs(Form("%s.png", output));
+
+    TCanvas* c2 = new TCanvas("c2", "c2", 2400, 2400);
+    c2->Divide(3, 4);
+
+    c2->cd(1);
+    plotSimple(
+        hHFEMaxPlus, "HFEMaxPlus", labels,
+        "HF E_{+} Max [GeV]", -1, -1,
+        "Counts", -5e3, 3e4,
+        false, false
+    );
+
+    c2->cd(2);
+    plotSimple(
+        hHFEMaxPlus2, "HFEMaxPlus2", labels,
+        "HF E_{+} Max 2 [GeV]", -1, -1,
+        "Counts", -5e3, 3e4,
+        false, false
+    );
+
+    c2->cd(3);
+    plotSimple(
+        hHFEMaxPlus3, "HFEMaxPlus3", labels,
+        "HF E_{+} Max 3 [GeV]", -1, -1,
+        "Counts", -5e3, 3e4,
+        false, false
+    );
+
+    c2->cd(4);
+    plotSimple(
+        hHFEMaxMinus, "HFEMaxMinus", labels,
+        "HF E_{-} Max [GeV]", -1, -1,
+        "Counts", -5e3, 3e4,
+        false, false
+    );
+
+    c2->cd(5);
+    plotSimple(
+        hHFEMaxMinus2, "HFEMaxMinus2", labels,
+        "HF E_{-} Max 2 [GeV]", -1, -1,
+        "Counts", -5e3, 3e4,
+        false, false
+    );
+
+    c2->cd(6);
+    plotSimple(
+        hHFEMaxMinus3, "HFEMaxMinus3", labels,
+        "HF E_{-} Max 3 [GeV]", -1, -1,
+        "Counts", -5e3, 3e4,
+        false, false
+    );
+
+    c1->cd(7);
     plotSimple(
         hTrkPhi, "TrkPhi", labels,
         "#phi", -3.2, 3.2,
@@ -725,7 +688,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(23);
+    c1->cd(8);
     plotSimple(
         hTrkCharge, "TrkCharge", labels,
         "Charge", -2, 2,
@@ -733,7 +696,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(24);
+    c1->cd(9);
     plotSimple(
         hTrkNHits, "TrkNHits", labels,
         "Number of Hits", -1, -1,
@@ -741,7 +704,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(25);
+    c1->cd(10);
     plotSimple(
         hTrkNPixHits, "TrkNPixHits", labels,
         "Number of Pixel Hits", -1, -1,
@@ -749,7 +712,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(26);
+    c1->cd(11);
     plotSimple(
         hTrkNLayers, "TrkNLayers", labels,
         "Number of Layers", -1, -1,
@@ -757,7 +720,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(27);
+    c1->cd(12);
     plotSimple(
         hTrkNormChi2, "TrkNormChi2", labels,
         "Normalized #chi^{2}", -1, -1,
@@ -765,15 +728,6 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(28);
-    plotSimple(
-        hpfEnergy, "pfEnergy", labels,
-        "PF Energy [GeV]", -1, -1,
-        "Counts", -1, -1,
-        false, false
-    );
-
-    
     // Save as png
-    c1->SaveAs(Form("%s", output));
+    c2->SaveAs(Form("%s-2.png", output));
 }
