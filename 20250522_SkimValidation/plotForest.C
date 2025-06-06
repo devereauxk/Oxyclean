@@ -680,7 +680,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(7);
+    c2->cd(7);
     plotSimple(
         hTrkPhi, "TrkPhi", labels,
         "#phi", -3.2, 3.2,
@@ -688,7 +688,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(8);
+    c2->cd(8);
     plotSimple(
         hTrkCharge, "TrkCharge", labels,
         "Charge", -2, 2,
@@ -696,7 +696,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(9);
+    c2->cd(9);
     plotSimple(
         hTrkNHits, "TrkNHits", labels,
         "Number of Hits", -1, -1,
@@ -704,7 +704,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(10);
+    c2->cd(10);
     plotSimple(
         hTrkNPixHits, "TrkNPixHits", labels,
         "Number of Pixel Hits", -1, -1,
@@ -712,7 +712,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(11);
+    c2->cd(11);
     plotSimple(
         hTrkNLayers, "TrkNLayers", labels,
         "Number of Layers", -1, -1,
@@ -720,7 +720,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         false, false
     );
 
-    c1->cd(12);
+    c2->cd(12);
     plotSimple(
         hTrkNormChi2, "TrkNormChi2", labels,
         "Norm #chi^{2}", -1, -1,
