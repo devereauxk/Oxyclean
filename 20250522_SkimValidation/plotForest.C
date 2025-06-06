@@ -635,7 +635,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c2->cd(1);
     plotSimple(
         hHFEMaxPlus, "HFEMaxPlus", labels,
-        "HF E_{+} Max [GeV]", -1, -1,
+        "HF E^{+} Max [GeV]", -1, -1,
         "Counts", -5e3, 3e4,
         false, false
     );
@@ -643,7 +643,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c2->cd(2);
     plotSimple(
         hHFEMaxPlus2, "HFEMaxPlus2", labels,
-        "HF E_{+} Max 2 [GeV]", -1, -1,
+        "HF E^{+} Max 2 [GeV]", -1, -1,
         "Counts", -5e3, 3e4,
         false, false
     );
@@ -651,7 +651,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c2->cd(3);
     plotSimple(
         hHFEMaxPlus3, "HFEMaxPlus3", labels,
-        "HF E_{+} Max 3 [GeV]", -1, -1,
+        "HF E^{+} Max 3 [GeV]", -1, -1,
         "Counts", -5e3, 3e4,
         false, false
     );
@@ -659,7 +659,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c2->cd(4);
     plotSimple(
         hHFEMaxMinus, "HFEMaxMinus", labels,
-        "HF E_{-} Max [GeV]", -1, -1,
+        "HF E^{-} Max [GeV]", -1, -1,
         "Counts", -5e3, 3e4,
         false, false
     );
@@ -667,7 +667,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c2->cd(5);
     plotSimple(
         hHFEMaxMinus2, "HFEMaxMinus2", labels,
-        "HF E_{-} Max 2 [GeV]", -1, -1,
+        "HF E^{-} Max 2 [GeV]", -1, -1,
         "Counts", -5e3, 3e4,
         false, false
     );
@@ -675,7 +675,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c2->cd(6);
     plotSimple(
         hHFEMaxMinus3, "HFEMaxMinus3", labels,
-        "HF E_{-} Max 3 [GeV]", -1, -1,
+        "HF E^{-} Max 3 [GeV]", -1, -1,
         "Counts", -5e3, 3e4,
         false, false
     );
@@ -723,7 +723,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c1->cd(12);
     plotSimple(
         hTrkNormChi2, "TrkNormChi2", labels,
-        "Normalized #chi^{2}", -1, -1,
+        "Norm #chi^{2}", -1, -1,
         "Counts", -1, -1,
         false, false
     );
