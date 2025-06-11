@@ -338,6 +338,76 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     TH1D* hHFEMaxPlus_skim   = (TH1D*)fSkim->Get("hHFEMaxPlus");   hHFEMaxPlus_skim->SetName("hHFEMaxPlus_skim");
     std::vector<TH1D*> hHFEMaxPlus = { hHFEMaxPlus_forest, hHFEMaxPlus_skim };
 
+    TH1D* hisFakeVtx_forest = (TH1D*)fForest->Get("hisFakeVtx"); hisFakeVtx_forest->SetName("hisFakeVtx_forest");
+    TH1D* hisFakeVtx_skim   = (TH1D*)fSkim->Get("hisFakeVtx");   hisFakeVtx_skim->SetName("hisFakeVtx_skim");
+    std::vector<TH1D*> hisFakeVtx = { hisFakeVtx_forest, hisFakeVtx_skim };
+
+    TH1D* hAllisFakeVtx_forest = (TH1D*)fForest->Get("hAllisFakeVtx"); hAllisFakeVtx_forest->SetName("hAllisFakeVtx_forest");
+    TH1D* hAllisFakeVtx_skim   = (TH1D*)fSkim->Get("hAllisFakeVtx");   hAllisFakeVtx_skim->SetName("hAllisFakeVtx_skim");
+    std::vector<TH1D*> hAllisFakeVtx = { hAllisFakeVtx_forest, hAllisFakeVtx_skim };
+
+    TH1D* hnTracksVtx_forest = (TH1D*)fForest->Get("hnTracksVtx"); hnTracksVtx_forest->SetName("hnTracksVtx_forest");
+    TH1D* hnTracksVtx_skim   = (TH1D*)fSkim->Get("hnTracksVtx");   hnTracksVtx_skim->SetName("hnTracksVtx_skim");
+    std::vector<TH1D*> hnTracksVtx = { hnTracksVtx_forest, hnTracksVtx_skim };
+
+    TH1D* hAllnTracksVtx_forest = (TH1D*)fForest->Get("hAllnTracksVtx"); hAllnTracksVtx_forest->SetName("hAllnTracksVtx_forest");
+    TH1D* hAllnTracksVtx_skim   = (TH1D*)fSkim->Get("hAllnTracksVtx");   hAllnTracksVtx_skim->SetName("hAllnTracksVtx_skim");
+    std::vector<TH1D*> hAllnTracksVtx = { hAllnTracksVtx_forest, hAllnTracksVtx_skim };
+
+    TH1D* hchi2Vtx_forest = (TH1D*)fForest->Get("hchi2Vtx"); hchi2Vtx_forest->SetName("hchi2Vtx_forest");
+    TH1D* hchi2Vtx_skim   = (TH1D*)fSkim->Get("hchi2Vtx");   hchi2Vtx_skim->SetName("hchi2Vtx_skim");
+    std::vector<TH1D*> hchi2Vtx = { hchi2Vtx_forest, hchi2Vtx_skim };
+
+    TH1D* hAllchi2Vtx_forest = (TH1D*)fForest->Get("hAllchi2Vtx"); hAllchi2Vtx_forest->SetName("hAllchi2Vtx_forest");
+    TH1D* hAllchi2Vtx_skim   = (TH1D*)fSkim->Get("hAllchi2Vtx");   hAllchi2Vtx_skim->SetName("hAllchi2Vtx_skim");
+    std::vector<TH1D*> hAllchi2Vtx = { hAllchi2Vtx_forest, hAllchi2Vtx_skim };
+
+    TH1D* hndofVtx_forest = (TH1D*)fForest->Get("hndofVtx"); hndofVtx_forest->SetName("hndofVtx_forest");
+    TH1D* hndofVtx_skim   = (TH1D*)fSkim->Get("hndofVtx");   hndofVtx_skim->SetName("hndofVtx_skim");
+    std::vector<TH1D*> hndofVtx = { hndofVtx_forest, hndofVtx_skim };
+
+    TH1D* hAllndofVtx_forest = (TH1D*)fForest->Get("hAllndofVtx"); hAllndofVtx_forest->SetName("hAllndofVtx_forest");
+    TH1D* hAllndofVtx_skim   = (TH1D*)fSkim->Get("hAllndofVtx");   hAllndofVtx_skim->SetName("hAllndofVtx_skim");
+    std::vector<TH1D*> hAllndofVtx = { hAllndofVtx_forest, hAllndofVtx_skim };
+
+    TH1D* hptSumVtx_forest = (TH1D*)fForest->Get("hptSumVtx"); hptSumVtx_forest->SetName("hptSumVtx_forest");
+    TH1D* hptSumVtx_skim   = (TH1D*)fSkim->Get("hptSumVtx");   hptSumVtx_skim->SetName("hptSumVtx_skim");
+    std::vector<TH1D*> hptSumVtx = { hptSumVtx_forest, hptSumVtx_skim };
+
+    TH1D* hAllptSumVtx_forest = (TH1D*)fForest->Get("hAllptSumVtx"); hAllptSumVtx_forest->SetName("hAllptSumVtx_forest");
+    TH1D* hAllptSumVtx_skim   = (TH1D*)fSkim->Get("hAllptSumVtx");   hAllptSumVtx_skim->SetName("hAllptSumVtx_skim");
+    std::vector<TH1D*> hAllptSumVtx = { hAllptSumVtx_forest, hAllptSumVtx_skim };
+
+    TH1D* htrkDxyAssociatedVtx_forest = (TH1D*)fForest->Get("htrkDxyAssociatedVtx");
+    htrkDxyAssociatedVtx_forest->SetName("htrkDxyAssociatedVtx_forest");
+    TH1D* htrkDxyAssociatedVtx_skim   = (TH1D*)fSkim->Get("htrkDxyAssociatedVtx");
+    htrkDxyAssociatedVtx_skim->SetName("htrkDxyAssociatedVtx_skim");
+    std::vector<TH1D*> htrkDxyAssociatedVtx = { htrkDxyAssociatedVtx_forest, htrkDxyAssociatedVtx_skim };
+
+    TH1D* htrkDxyErrAssociatedVtx_forest = (TH1D*)fForest->Get("htrkDxyErrAssociatedVtx");
+    htrkDxyErrAssociatedVtx_forest->SetName("htrkDxyErrAssociatedVtx_forest");
+    TH1D* htrkDxyErrAssociatedVtx_skim   = (TH1D*)fSkim->Get("htrkDxyErrAssociatedVtx");
+    htrkDxyErrAssociatedVtx_skim->SetName("htrkDxyErrAssociatedVtx_skim");
+    std::vector<TH1D*> htrkDxyErrAssociatedVtx = { htrkDxyErrAssociatedVtx_forest, htrkDxyErrAssociatedVtx_skim };
+
+    TH1D* htrkDzAssociatedVtx_forest = (TH1D*)fForest->Get("htrkDzAssociatedVtx");
+    htrkDzAssociatedVtx_forest->SetName("htrkDzAssociatedVtx_forest");
+    TH1D* htrkDzAssociatedVtx_skim   = (TH1D*)fSkim->Get("htrkDzAssociatedVtx");
+    htrkDzAssociatedVtx_skim->SetName("htrkDzAssociatedVtx_skim");
+    std::vector<TH1D*> htrkDzAssociatedVtx = { htrkDzAssociatedVtx_forest, htrkDzAssociatedVtx_skim };
+
+    TH1D* htrkDzErrAssociatedVtx_forest = (TH1D*)fForest->Get("htrkDzErrAssociatedVtx");
+    htrkDzErrAssociatedVtx_forest->SetName("htrkDzErrAssociatedVtx_forest");
+    TH1D* htrkDzErrAssociatedVtx_skim   = (TH1D*)fSkim->Get("htrkDzErrAssociatedVtx");
+    htrkDzErrAssociatedVtx_skim->SetName("htrkDzErrAssociatedVtx_skim");
+    std::vector<TH1D*> htrkDzErrAssociatedVtx = { htrkDzErrAssociatedVtx_forest, htrkDzErrAssociatedVtx_skim };
+
+    TH1D* htrkAssociatedVtxIndx_forest = (TH1D*)fForest->Get("htrkAssociatedVtxIndx");
+    htrkAssociatedVtxIndx_forest->SetName("htrkAssociatedVtxIndx_forest");
+    TH1D* htrkAssociatedVtxIndx_skim   = (TH1D*)fSkim->Get("htrkAssociatedVtxIndx");
+    htrkAssociatedVtxIndx_skim->SetName("htrkAssociatedVtxIndx_skim");
+    std::vector<TH1D*> htrkAssociatedVtxIndx = { htrkAssociatedVtxIndx_forest, htrkAssociatedVtxIndx_skim };
+
     TH1D* hHFEMaxPlus2_forest = (TH1D*)fForest->Get("hHFEMaxPlus2");
     hHFEMaxPlus2_forest->SetName("hHFEMaxPlus2_forest");
     TH1D* hHFEMaxPlus2_skim   = (TH1D*)fSkim->Get("hHFEMaxPlus2");
@@ -381,6 +451,18 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     htrkPtEtaHighPurity_skim->SetName("trkPtEtaHighPurity_skim");
     std::vector<TH3D*> htrkPtEtaHighPurity = { htrkPtEtaHighPurity_forest, htrkPtEtaHighPurity_skim };
 
+    TH3D* hAllVXYZ_forest = (TH3D*)fForest->Get("AllVXYZ");
+    hAllVXYZ_forest->SetName("hAllVXYZ_forest");
+    TH3D* hAllVXYZ_skim   = (TH3D*)fSkim->Get("AllVXYZ");
+    hAllVXYZ_skim->SetName("hAllVXYZ_skim");
+    std::vector<TH3D*> hAllVXYZ = { hAllVXYZ_forest, hAllVXYZ_skim };
+
+    TH3D* hAllVXYZErr_forest = (TH3D*)fForest->Get("AllVXYZErr");
+    hAllVXYZErr_forest->SetName("hAllVXYZErr_forest");
+    TH3D* hAllVXYZErr_skim   = (TH3D*)fSkim->Get("AllVXYZErr");
+    hAllVXYZErr_skim->SetName("hAllVXYZErr_skim");
+    std::vector<TH3D*> hAllVXYZErr = { hAllVXYZErr_forest, hAllVXYZErr_skim };
+
     // Projections with unique names
     std::vector<TH1D*> VX = {
         (TH1D*)VXYZ[0]->ProjectionX("VX_forest"),
@@ -418,6 +500,32 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
         (TH1D*)htrkPtEtaHighPurity[0]->ProjectionZ("highPurity_forest"),
         (TH1D*)htrkPtEtaHighPurity[1]->ProjectionZ("highPurity_skim")
     };
+    std::vector<TH1D*> hAllVXYZ_X = {
+        (TH1D*)hAllVXYZ[0]->ProjectionX("hAllVXYZ_X_forest"),
+        (TH1D*)hAllVXYZ[1]->ProjectionX("hAllVXYZ_X_skim")
+    };
+    std::vector<TH1D*> hAllVXYZ_Y = {
+        (TH1D*)hAllVXYZ[0]->ProjectionY("hAllVXYZ_Y_forest"),
+        (TH1D*)hAllVXYZ[1]->ProjectionY("hAllVXYZ_Y_skim")
+    };
+    std::vector<TH1D*> hAllVXYZ_Z = {
+        (TH1D*)hAllVXYZ[0]->ProjectionZ("hAllVXYZ_Z_forest"),
+        (TH1D*)hAllVXYZ[1]->ProjectionZ("hAllVXYZ_Z_skim")
+    };
+    std::vector<TH1D*> hAllVXYZErr_X = {
+        (TH1D*)hAllVXYZErr[0]->ProjectionX("hAllVXYZErr_X_forest"),
+        (TH1D*)hAllVXYZErr[1]->ProjectionX("hAllVXYZErr_X_skim")
+    };
+    std::vector<TH1D*> hAllVXYZErr_Y = {
+        (TH1D*)hAllVXYZErr[0]->ProjectionY("hAllVXYZErr_Y_forest"),
+        (TH1D*)hAllVXYZErr[1]->ProjectionY("hAllVXYZErr_Y_skim")
+    };
+    std::vector<TH1D*> hAllVXYZErr_Z = {
+        (TH1D*)hAllVXYZErr[0]->ProjectionZ("hAllVXYZErr_Z_forest"),
+        (TH1D*)hAllVXYZErr[1]->ProjectionZ("hAllVXYZErr_Z_skim")
+    };
+
+
     // Project trkPt for |eta| < 1 and highPurity bin centered at 1
     int eta_min_bin = htrkPtEtaHighPurity[0]->GetYaxis()->FindBin(-1.0 + 1e-6);
     int eta_max_bin = htrkPtEtaHighPurity[0]->GetYaxis()->FindBin(1.0 - 1e-6);
@@ -449,8 +557,8 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c1->cd(1);
     plotSimple(
         hNEvtPassCuts, "NEvtPassCuts", labels,
-        "NEvtPassCuts", -1, -1,
-        "Counts", 0.97e6, 1e6,
+        "", -1, -1,
+        "Counts", 96e4, 1e6,
         false, false,
         true
     );
@@ -730,4 +838,185 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
 
     // Save as png
     c2->SaveAs(Form("%s-2.png", output));
+
+    TCanvas* c3 = new TCanvas("c3", "c3", 2400, 7*600);
+    c3->Divide(3, 7);
+
+    c3->cd(1);
+    plotSimple(
+        hisFakeVtx, "hisFakeVtx", labels,
+        "Fake Vertex", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c3->cd(2);
+    plotSimple(
+        hAllisFakeVtx, "hAllisFakeVtx", labels,
+        "All Fake Vertex", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c3->cd(3);
+    plotSimple(
+        hnTracksVtx, "hnTracksVtx", labels,
+        "Number of Tracks in Vertex", -1, -1,
+        "Counts", 0, 50e3,
+        false, false
+    );
+
+    c3->cd(4);
+    plotSimple(
+        hAllnTracksVtx, "hAllnTracksVtx", labels,
+        "All Number of Tracks in Vertex", -1, -1,
+        "Counts", 0, 50e3,
+        false, false
+    );
+
+    c3->cd(5);
+    plotSimple(
+        hchi2Vtx, "hchi2Vtx", labels,
+        "#chi^{2} of Vertex", -1, -1,
+        "Counts", 0, 50e3,
+        false, false
+    );
+
+    c3->cd(6);
+    plotSimple(
+        hAllchi2Vtx, "hAllchi2Vtx", labels,
+        "All #chi^{2} of Vertex", -1, -1,
+        "Counts", 0, 50e3,
+        false, false
+    );
+
+    c3->cd(7);
+    plotSimple(
+        hndofVtx, "hndofVtx", labels,
+        "N_{dof} of Vertex", -1, -1,
+        "Counts", 0, 50e3,
+        false, false
+    );
+
+    c3->cd(8);
+    plotSimple(
+        hAllndofVtx, "hAllndofVtx", labels,
+        "All N_{dof} of Vertex", -1, -1,
+        "Counts", 0, 50e3,
+        false, false
+    );
+
+    c3->cd(9);
+    plotSimple(
+        hptSumVtx, "hptSumVtx", labels,
+        "p_{T} Sum of Vertex", -1, -1,
+        "Counts", 0, 50e3,
+        false, false
+    );
+
+    c3->cd(10);
+    plotSimple(
+        hAllptSumVtx, "hAllptSumVtx", labels,
+        "All p_{T} Sum of Vertex", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c3->cd(11);
+    plotSimple(
+        htrkDxyAssociatedVtx, "trkDxyAssociatedVtx", labels,
+        "Track Dxy Associated to Vertex [cm]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c3->cd(12);
+    plotSimple(
+        htrkDxyErrAssociatedVtx, "trkDxyErrAssociatedVtx", labels,
+        "Track Dxy Error Associated to Vertex [cm]", -1, -1,
+        "Counts", 0, 5e6,
+        false, false
+    );
+
+    c3->cd(13);
+    plotSimple(
+        htrkDzAssociatedVtx, "trkDzAssociatedVtx", labels,
+        "Track Dz Associated to Vertex [cm]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c3->cd(14);
+    plotSimple(
+        htrkDzErrAssociatedVtx, "trkDzErrAssociatedVtx", labels,
+        "Track Dz Error Associated to Vertex [cm]", -1, -1,
+        "Counts", 0, 5e6,
+        false, false
+    );
+
+    c3->cd(15);
+    plotSimple(
+        htrkAssociatedVtxIndx, "trkAssociatedVtxIndx", labels,
+        "Track Associated Vertex Index", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    // Save as png
+    c3->SaveAs(Form("%s-3.png", output));
+
+    TCanvas* c4 = new TCanvas("c4", "c4", 2400, 1200);
+    c4->Divide(3, 2);
+
+    c4->cd(1);
+    plotSimple(
+        hAllVXYZ_X, "hAllVXYZ_X", labels,
+        "X [cm]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c4->cd(2);
+    plotSimple(
+        hAllVXYZ_Y, "hAllVXYZ_Y", labels,
+        "Y [cm]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c4->cd(3);
+    plotSimple(
+        hAllVXYZ_Z, "hAllVXYZ_Z", labels,
+        "Z [cm]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c4->cd(4);
+    plotSimple(
+        hAllVXYZErr_X, "hAllVXYZErr_X", labels,
+        "X Error [cm]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c4->cd(5);
+    plotSimple(
+        hAllVXYZErr_Y, "hAllVXYZErr_Y", labels,
+        "Y Error [cm]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c4->cd(6);
+    plotSimple(
+        hAllVXYZErr_Z, "hAllVXYZErr_Z", labels,
+        "Z Error [cm]", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    // Save as png
+    c4->SaveAs(Form("%s-4.png", output));
+
 }
