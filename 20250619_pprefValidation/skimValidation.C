@@ -24,7 +24,7 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     // output histogram initialization
     TH1D* hNEvtPassCuts = new TH1D("hNEvtPassCuts", "Number of events passing cuts", 6, 0.5, 6.5);
     hNEvtPassCuts->GetXaxis()->SetBinLabel(1, "Total Events");
-    hNEvtPassCuts->GetXaxis()->SetBinLabel(2, "+ CC");
+    hNEvtPassCuts->GetXaxis()->SetBinLabel(2, "[no CC for ppref]");
     hNEvtPassCuts->GetXaxis()->SetBinLabel(3, "+ PV");
     hNEvtPassCuts->GetXaxis()->SetBinLabel(4, "+ nVtx>0");
     hNEvtPassCuts->GetXaxis()->SetBinLabel(5, "+ !isFakeVtx");
@@ -68,11 +68,11 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     TH1D* htrkDzErrAssociatedVtx =  new TH1D("htrkDzErrAssociatedVtx", "Track Dz Error Associated to Vertex", 100, 0, 0.02);
     TH1D* htrkAssociatedVtxIndx =    new TH1D("htrkAssociatedVtxIndx", "Track Associated Vertex Index", 10, -0.5, 10.5);
 
-    TH3D* VXYZ =    new TH3D("VXYZ", "Best Vertex XYZ", 50, -0.2, 0.2, 50, -0.2, 0.2, 50, -25, 25);
+    TH3D* VXYZ =    new TH3D("VXYZ", "Best Vertex XYZ", 50, -0.1, 0.1, 50, -0.1, 0.1, 50, -25, 25);
     TH3D* VXYZErr = new TH3D("VXYZErr", "Best Vertex XYZ Error", 50, 0, 0.02, 50, 0, 0.02, 50, 0, 0.01);
     TH3D* htrkPtEtaHighPurity = new TH3D("trkPtEtaHighPurity", "Track pT vs Eta vs High Purity", 70, 0, 5, 100, -4, 4, 2, -0.5, 1.5);
 
-    TH3D* AllVXYZ =   new TH3D("AllVXYZ", "All Vertices XYZ", 50, -0.2, 0.2, 50, -0.2, 0.2, 50, -25, 25);
+    TH3D* AllVXYZ =   new TH3D("AllVXYZ", "All Vertices XYZ", 50, -0.1, 0.1, 50, -0.1, 0.1, 50, -25, 25);
     TH3D* AllVXYZErr = new TH3D("AllVXYZErr", "All Vertices XYZ Error", 50, 0, 0.02, 50, 0, 0.02, 50, 0, 0.01);
 
     // Define branch variables
@@ -109,7 +109,7 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->AddFriend("skimanalysis/HltTree"); // Add the skim tree as a friend
         tree->AddFriend("hiEvtAnalyzer/HiTree"); // Add the event tree as a friend
         tree->AddFriend("ppTracks/trackTree");   // Add the track tree as a friend
-        tree->AddFriend("particleFlowAnalyser/pftree"); // Add the particle flow tree as a friend
+        //tree->AddFriend("particleFlowAnalyser/pftree"); // Add the particle flow tree as a friend
 
         // event-level
         tree->SetBranchAddress("nRun", &nRun);
@@ -117,10 +117,10 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->SetBranchAddress("nLumi", &nLumi);
         tree->SetBranchAddress("nVtx", &nVtx);
         tree->SetBranchAddress("hiBin", &hiBin);
-        tree->SetBranchAddress("Npart", &Npart);
-        tree->SetBranchAddress("Ncoll", &Ncoll);
+        //tree->SetBranchAddress("Npart", &Npart);
+        //tree->SetBranchAddress("Ncoll", &Ncoll);
         tree->SetBranchAddress("hiHF_pf", &hiHF_pf);
-        tree->SetBranchAddress("pclusterCompatibilityFilter", &ClusterCompatibilityFilter);
+        //tree->SetBranchAddress("pclusterCompatibilityFilter", &ClusterCompatibilityFilter);
         tree->SetBranchAddress("pprimaryVertexFilter", &PVFilter);
 
         // vertex-level
@@ -147,14 +147,17 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->SetBranchAddress("trkNLayers", &trkNLayers);
         tree->SetBranchAddress("trkNormChi2", &trkNormChi2);
         tree->SetBranchAddress("pfEnergy", &pfEnergy);
-        tree->SetBranchAddress("pfId", &pfId);
-        tree->SetBranchAddress("pfE", &pfE);
-        tree->SetBranchAddress("pfEta", &pfEta);
+        //tree->SetBranchAddress("pfId", &pfId);
+        //tree->SetBranchAddress("pfE", &pfE);
+        //tree->SetBranchAddress("pfEta", &pfEta);
         tree->SetBranchAddress("trkDxyAssociatedVtx", &trkDxyAssociatedVtx);
         tree->SetBranchAddress("trkDxyErrAssociatedVtx", &trkDxyErrAssociatedVtx);
         tree->SetBranchAddress("trkDzAssociatedVtx", &trkDzAssociatedVtx);
         tree->SetBranchAddress("trkDzErrAssociatedVtx", &trkDzErrAssociatedVtx);
         tree->SetBranchAddress("trkAssociatedVtxIndx", &trkAssociatedVtxIndx);
+
+        // vipul's method
+        tree->SetBranchAddress("vz", &VZ);
 
     } // if just skim
     else {
@@ -166,10 +169,10 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->SetBranchAddress("Lumi", &nLumi);
         tree->SetBranchAddress("nVtx", &nVtx);
         tree->SetBranchAddress("hiBin", &hiBin);
-        tree->SetBranchAddress("Npart", &Npart);
-        tree->SetBranchAddress("Ncoll", &Ncoll);
+        //tree->SetBranchAddress("Npart", &Npart);
+        //tree->SetBranchAddress("Ncoll", &Ncoll);
         tree->SetBranchAddress("hiHF_pf", &hiHF_pf);
-        tree->SetBranchAddress("ClusterCompatibilityFilter", &ClusterCompatibilityFilter);
+        //tree->SetBranchAddress("ClusterCompatibilityFilter", &ClusterCompatibilityFilter);
         tree->SetBranchAddress("PVFilter", &PVFilter);
         tree->SetBranchAddress("VX", &VX);
         tree->SetBranchAddress("VY", &VY);
@@ -223,6 +226,7 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
 
     // Loop over the events
     int nEntries = tree->GetEntries();
+    int printCounter = 0;
     for (int i = 0; i < nEntries; ++i) {
 
         if (i % 1000 == 0) {
@@ -238,7 +242,7 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         int bestVertexIdx = -1;
         if (isForest) {
             for (int j = 0; j < nVtx; ++j) {
-                if (((bestVertexIdx == -1 && ptSumVtx->at(j) > 0) || (bestVertexIdx != -1 && ptSumVtx->at(j) > ptSumVtx->at(bestVertexIdx)))) {
+                if (bestVertexIdx == -1 || (bestVertexIdx != -1 && ptSumVtx->at(j) > ptSumVtx->at(bestVertexIdx))) {
                     bestVertexIdx = j;
                 }
             }
@@ -247,40 +251,43 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         // Fill the event count histogram
         hNEvtPassCuts->Fill(1); // Total events
 
-        // Apply the CC filter
-        if (ClusterCompatibilityFilter) {
-            hNEvtPassCuts->Fill(2); // CC filter passed
-        }
+        // Apply the CC filter, not for ppref
+        hNEvtPassCuts->Fill(2); // CC filter passed
 
         // Apply the PV filter
-        if (ClusterCompatibilityFilter && PVFilter) {
+        if ( PVFilter) {
             hNEvtPassCuts->Fill(3); // PV filter passed
         }
 
         // Apply the nVtx filter
-        if (ClusterCompatibilityFilter && PVFilter && nVtx > 0) {
+        if ( PVFilter && nVtx > 0) {
             hNEvtPassCuts->Fill(4); // nVtx filter passed
         }
 
         // Apply the isFakeVtx filter
         if (isForest) {
-            if (ClusterCompatibilityFilter && PVFilter && nVtx > 0 && bestVertexIdx > -1 && !isFakeVtx->at(bestVertexIdx)) {
+            if ( PVFilter && nVtx > 0 && bestVertexIdx > -1 && !isFakeVtx->at(bestVertexIdx)) {
                 hNEvtPassCuts->Fill(5); // isFakeVtx filter passed
-                //passedCuts = true;
+                //passedCuts = true; // mark as passed if all conditions are met
             }
         } else {
-            if (ClusterCompatibilityFilter && PVFilter && nVtx > 0 && !isFakeVtx_skim) {
+            if ( PVFilter && nVtx > 0 && !isFakeVtx_skim) {
                 hNEvtPassCuts->Fill(5); // isFakeVtx filter passed
-                //passedCuts = true;
+                //passedCuts = true; // mark as passed if all conditions are met
             }
         }
 
         // Apply the VZ filter
-        if (ClusterCompatibilityFilter && PVFilter && nVtx > 0 && 
-            ((isForest && bestVertexIdx > -1 && fabs(VZ) < 15.0) || 
+        if ( PVFilter && nVtx > 0 && 
+            ((isForest && bestVertexIdx > -1 && fabs(zVtx->at(bestVertexIdx)) < 15.0) || 
              (!isForest && fabs(VZ) < 15.0))) {
             hNEvtPassCuts->Fill(6); // VZ filter passed
             passedCuts = true;
+        }
+
+        if (passedCuts && bestVertexIdx != -1 && VZ != zVtx->at(bestVertexIdx) && fabs(VZ) < 15.0 && fabs(zVtx->at(bestVertexIdx)) > 15.0) {
+            std::cerr << bestVertexIdx << " "<< VZ << " " << zVtx->at(bestVertexIdx) << " " << ptSumVtx->at(bestVertexIdx) << " " << nVtx << " " << nEv << std::endl;
+            printCounter++;
         }
 
         // apply cuts if requested
@@ -360,6 +367,7 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         }
 
         // determine leading 1st, 2nd, 3rd PF candidates
+        /*
         if (isForest) {
             HFEMaxPlus = 0;
             HFEMaxPlus2 = 0;
@@ -407,8 +415,11 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         if (HFEMaxMinus > 0)    hHFEMaxMinus->Fill(HFEMaxMinus);
         if (HFEMaxMinus2 > 0)   hHFEMaxMinus2->Fill(HFEMaxMinus2);
         if (HFEMaxMinus3 > 0)   hHFEMaxMinus3->Fill(HFEMaxMinus3);
+        */
         
     }
+
+    std::cout << "Total number of events printed: " << printCounter << std::endl;
 
     // write to output file
     TFile* foutput = new TFile(outputFile, "RECREATE");

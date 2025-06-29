@@ -558,7 +558,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hNEvtPassCuts, "NEvtPassCuts", labels,
         "", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 89e3, 92e3,
         false, false,
         true
     );
@@ -585,7 +585,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hNLumi, "NLumi", labels,
         "NLumi", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 17000, 21000,
         false, false
     );
 
@@ -632,7 +632,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c1->cd(10);
     plotSimple(
         VX, "VX", labels,
-        "X [cm]", -1, -1,
+        "X [cm]", -0.02, 0.1,
         "Counts", -1, -1,
         false, false
     );
@@ -640,7 +640,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c1->cd(11);
     plotSimple(
         VY, "VY", labels,
-        "Y [cm]", -1, -1,
+        "Y [cm]", -0.6, -0.6,
         "Counts", -1, -1,
         false, false
     );
@@ -744,7 +744,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hHFEMaxPlus, "HFEMaxPlus", labels,
         "HF E^{+} Max [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", -5e3, 3e4,
         false, false
     );
 
@@ -752,7 +752,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hHFEMaxPlus2, "HFEMaxPlus2", labels,
         "HF E^{+} Max 2 [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", -5e3, 3e4,
         false, false
     );
 
@@ -760,7 +760,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hHFEMaxPlus3, "HFEMaxPlus3", labels,
         "HF E^{+} Max 3 [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", -5e3, 3e4,
         false, false
     );
 
@@ -768,7 +768,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hHFEMaxMinus, "HFEMaxMinus", labels,
         "HF E^{-} Max [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", -5e3, 3e4,
         false, false
     );
 
@@ -776,7 +776,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hHFEMaxMinus2, "HFEMaxMinus2", labels,
         "HF E^{-} Max 2 [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", -5e3, 3e4,
         false, false
     );
 
@@ -784,14 +784,14 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hHFEMaxMinus3, "HFEMaxMinus3", labels,
         "HF E^{-} Max 3 [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", -5e3, 3e4,
         false, false
     );
 
     c2->cd(7);
     plotSimple(
         hTrkPhi, "TrkPhi", labels,
-        "#phi", -1, -1,
+        "#phi", -3.2, 3.2,
         "Counts", -1, -1,
         false, false
     );
@@ -799,7 +799,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     c2->cd(8);
     plotSimple(
         hTrkCharge, "TrkCharge", labels,
-        "Charge", -1, -1,
+        "Charge", -2, 2,
         "Counts", -1, -1,
         false, false
     );
@@ -862,7 +862,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hnTracksVtx, "hnTracksVtx", labels,
         "Number of Tracks in Vertex", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 50e3,
         false, false
     );
 
@@ -870,7 +870,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hAllnTracksVtx, "hAllnTracksVtx", labels,
         "All Number of Tracks in Vertex", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 50e3,
         false, false
     );
 
@@ -878,7 +878,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hchi2Vtx, "hchi2Vtx", labels,
         "#chi^{2} of Vertex", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 50e3,
         false, false
     );
 
@@ -886,7 +886,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hAllchi2Vtx, "hAllchi2Vtx", labels,
         "All #chi^{2} of Vertex", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 50e3,
         false, false
     );
 
@@ -894,7 +894,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hndofVtx, "hndofVtx", labels,
         "N_{dof} of Vertex", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 50e3,
         false, false
     );
 
@@ -902,7 +902,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hAllndofVtx, "hAllndofVtx", labels,
         "All N_{dof} of Vertex", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 50e3,
         false, false
     );
 
@@ -910,7 +910,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hptSumVtx, "hptSumVtx", labels,
         "p_{T} Sum of Vertex", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 50e3,
         false, false
     );
 
@@ -934,7 +934,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         htrkDxyErrAssociatedVtx, "trkDxyErrAssociatedVtx", labels,
         "Track Dxy Error Associated to Vertex [cm]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 5e6,
         false, false
     );
 
@@ -950,7 +950,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         htrkDzErrAssociatedVtx, "trkDzErrAssociatedVtx", labels,
         "Track Dz Error Associated to Vertex [cm]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 5e6,
         false, false
     );
 
