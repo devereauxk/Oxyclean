@@ -251,7 +251,7 @@ void plotSimple(vector<TH1D*> hists, const char* title, vector<string> labels,
 }
 
 
-void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
+void plotComparison(const char* forestInput =   "output/skimValidation_forest.root",
                 const char* skimInput =     "output/skimValidation_skim.root",
                 const char* output =        "plots/forest_and_skim") {
 

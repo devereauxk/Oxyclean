@@ -7,16 +7,19 @@
 #skimFile=/data00/kdeverea/OOsamples/Skims/20250629_Skim_OOMCforJing.root
 #name=OOMCforJing
 
-forestFile=/eos/cms/store/group/phys_heavyions/jdlang/Run3_OO_2025Data_FastPrivateReco/TEMP/HiForestMiniAOD_PhysicsIonPhysics0_393767.root
-skimFile=/data00/kdeverea/OOsamples/Skims/Run3_OO_2025Data_FastPrivateReco_393767.root
-name=Run3_OO_2025Data_FastPrivateReco_393767
+#forestFile=/eos/cms/store/group/phys_heavyions/jdlang/Run3_OO_2025Data_FastPrivateReco/TEMP/HiForestMiniAOD_PhysicsIonPhysics0_393767.root
+#skimFile=/data00/kdeverea/OOsamples/Skims/Run3_OO_2025Data_FastPrivateReco_393767.root
+#name=Run3_OO_2025Data_FastPrivateReco_393767
+
+skimFile=/data00/bakovacs/OOsamples/Skims/20250701_pO_PhysicsIonPhysics0_393952_PPS_ZBtriggerInc_new.root
+name=20250701_pO_PhysicsIonPhysics0_393952_PPS_ZBtriggerInc_new
 
 # event cut, track cut
 # forest
-root -l -b -q "skimValidation.C(\"$forestFile\", \"output/$name-forest.root\", true, false, false)"
+#root -l -b -q "skimValidation.C(\"$forestFile\", \"output/$name-forest.root\", true, false, false)"
 
 # skim
-root -l -b -q "skimValidation.C(\"$skimFile\", \"output/$name-skim.root\", false, false, false)"
+#root -l -b -q "skimValidation.C(\"$skimFile\", \"output/$name-skim.root\", false, false, false)"
 
 # plot
-root -l -b -q "plotForest.C(\"output/$name-forest.root\", \"output/$name-skim.root\", \"plots/$name\")"
+root -l -b -q "plotForest.C(\"output/$name-skim.root\", \"output/$name-skim.root\", \"plots/$name\")"

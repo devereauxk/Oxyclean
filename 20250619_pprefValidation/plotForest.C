@@ -558,7 +558,7 @@ void plotForest(const char* forestInput =   "output/skimValidation_forest.root",
     plotSimple(
         hNEvtPassCuts, "NEvtPassCuts", labels,
         "", -1, -1,
-        "Counts", 89e3, 92e3,
+        "Counts", -1, -1,
         false, false,
         true
     );

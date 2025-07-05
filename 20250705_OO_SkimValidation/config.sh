@@ -1,0 +1,5 @@
+export forestFile=/eos/cms/store/group/phys_heavyions/jdlang/Run3_OO_2025Data_QuickForest/OO_394153_PhysicsIonPhysics0/crab_OO_394153_PhysicsIonPhysics0/250705_074244/0000/HiForestMiniAOD_1.root
+export skimFile=/data00/bakovacs/OOsamples/Skims/20250705_OO_Kyle_crosscheck.root
+export name=crab_OO_394153_PhysicsIonPhysics0_debug_EvtTrkSel
+export ApplyEventSelection=true
+export ApplyTrackSelection=true
