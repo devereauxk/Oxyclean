@@ -268,15 +268,11 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     }
 
     // Read in histograms from both files and fill vectors
-    std::vector<string> labels = {"forest", "skim"};    
+    std::vector<string> labels = {"old skim", "new skim"};    
     // Fetch and uniquely name 1D histograms
     TH1D* hNEvtPassCuts_forest = (TH1D*)fForest->Get("hNEvtPassCuts"); hNEvtPassCuts_forest->SetName("hNEvtPassCuts_forest");
     TH1D* hNEvtPassCuts_skim   = (TH1D*)fSkim->Get("hNEvtPassCuts");   hNEvtPassCuts_skim->SetName("hNEvtPassCuts_skim");
     std::vector<TH1D*> hNEvtPassCuts = { hNEvtPassCuts_forest, hNEvtPassCuts_skim };
-
-    TH1D* hNTrkPassCuts_forest = (TH1D*)fForest->Get("hNTrkPassCuts"); hNTrkPassCuts_forest->SetName("hNTrkPassCuts_forest");
-    TH1D* hNTrkPassCuts_skim   = (TH1D*)fSkim->Get("hNTrkPassCuts");   hNTrkPassCuts_skim->SetName("hNTrkPassCuts_skim");
-    std::vector<TH1D*> hNTrkPassCuts = { hNTrkPassCuts_forest, hNTrkPassCuts_skim };
 
     TH1D* hNRun_forest = (TH1D*)fForest->Get("hnRun"); hNRun_forest->SetName("hNRun_forest");
     TH1D* hNRun_skim   = (TH1D*)fSkim->Get("hnRun");   hNRun_skim->SetName("hNRun_skim");
@@ -553,6 +549,44 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
         (TH1D*)htrkPtEtaHighPurity[1]->ProjectionY("trkEta_highPurity_skim", 0, -1, purity_bin, purity_bin)
     };
 
+    TH1D* htrkPassChargedHadron_Loose_forest = (TH1D*)fForest->Get("htrkPassChargedHadron_Loose");
+    htrkPassChargedHadron_Loose_forest->SetName("htrkPassChargedHadron_Loose_forest");
+    TH1D* htrkPassChargedHadron_Loose_skim   = (TH1D*)fSkim->Get("htrkPassChargedHadron_Loose");
+    htrkPassChargedHadron_Loose_skim->SetName("htrkPassChargedHadron_Loose_skim");
+    std::vector<TH1D*> htrkPassChargedHadron_Loose = { htrkPassChargedHadron_Loose_forest, htrkPassChargedHadron_Loose_skim };
+    TH1D* htrkPassChargedHadron_Tight_forest = (TH1D*)fForest->Get("htrkPassChargedHadron_Tight");
+    htrkPassChargedHadron_Tight_forest->SetName("htrkPassChargedHadron_Tight_forest");
+    TH1D* htrkPassChargedHadron_Tight_skim   = (TH1D*)fSkim->Get("htrkPassChargedHadron_Tight");
+    htrkPassChargedHadron_Tight_skim->SetName("htrkPassChargedHadron_Tight_skim");
+    std::vector<TH1D*> htrkPassChargedHadron_Tight = { htrkPassChargedHadron_Tight_forest, htrkPassChargedHadron_Tight_skim };
+    TH1D* htrkPassChargedHadron_Nominal_forest = (TH1D*)fForest->Get("htrkPassChargedHadron_Nominal");
+    htrkPassChargedHadron_Nominal_forest->SetName("htrkPassChargedHadron_Nominal_forest");
+    TH1D* htrkPassChargedHadron_Nominal_skim   = (TH1D*)fSkim->Get("htrkPassChargedHadron_Nominal");
+    htrkPassChargedHadron_Nominal_skim->SetName("htrkPassChargedHadron_Nominal_skim");
+    std::vector<TH1D*> htrkPassChargedHadron_Nominal = { htrkPassChargedHadron_Nominal_forest, htrkPassChargedHadron_Nominal_skim };
+
+    TH1D* trackingEfficiency_Loose_forest = (TH1D*)fForest->Get("htrackingEfficiency_Loose");
+    trackingEfficiency_Loose_forest->SetName("trackingEfficiency_Loose_forest");
+    TH1D* trackingEfficiency_Loose_skim   = (TH1D*)fSkim->Get("htrackingEfficiency_Loose");
+    trackingEfficiency_Loose_skim->SetName("trackingEfficiency_Loose_skim");
+    std::vector<TH1D*> trackingEfficiency_Loose = { trackingEfficiency_Loose_forest, trackingEfficiency_Loose_skim };
+    TH1D* trackingEfficiency_Tight_forest = (TH1D*)fForest->Get("htrackingEfficiency_Tight");
+    trackingEfficiency_Tight_forest->SetName("trackingEfficiency_Tight_forest");
+    TH1D* trackingEfficiency_Tight_skim   = (TH1D*)fSkim->Get("htrackingEfficiency_Tight");
+    trackingEfficiency_Tight_skim->SetName("trackingEfficiency_Tight_skim");
+    std::vector<TH1D*> trackingEfficiency_Tight = { trackingEfficiency_Tight_forest, trackingEfficiency_Tight_skim };
+    TH1D* trackingEfficiency_Nominal_forest = (TH1D*)fForest->Get("htrackingEfficiency_Nominal");
+    trackingEfficiency_Nominal_forest->SetName("trackingEfficiency_Nominal_forest");
+    TH1D* trackingEfficiency_Nominal_skim   = (TH1D*)fSkim->Get("htrackingEfficiency_Nominal");
+    trackingEfficiency_Nominal_skim->SetName("trackingEfficiency_Nominal_skim");
+    std::vector<TH1D*> trackingEfficiency_Nominal = { trackingEfficiency_Nominal_forest, trackingEfficiency_Nominal_skim };
+
+    TH1D* trackWeight_forest = (TH1D*)fForest->Get("htrackWeight");
+    trackWeight_forest->SetName("trackWeight_forest");
+    TH1D* trackWeight_skim   = (TH1D*)fSkim->Get("htrackWeight");
+    trackWeight_skim->SetName("trackWeight_skim");
+    std::vector<TH1D*> trackWeight = { trackWeight_forest, trackWeight_skim };
+
 
     // make canvas
     TCanvas* c1 = new TCanvas("c1", "c1", 2400, 5400);
@@ -575,19 +609,15 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
         false, false
     );
 
+    /*
     c1->cd(3);
     plotSimple(
-        hNTrkPassCuts, "hNTrkPassCuts", labels,
-        "hNTrkPassCuts", -1, -1,
+        hNEvt, "hNEvt", labels,
+        "hNEvt", -1, -1,
         "Counts", -1, -1,
-        false, false, true
+        false, false
     );
-    // Print last bin content for each histogram
-    for (size_t i = 0; i < hNTrkPassCuts.size(); ++i) {
-        int lastBin = hNTrkPassCuts[i]->GetNbinsX();
-        double lastBinContent = hNTrkPassCuts[i]->GetBinContent(lastBin);
-        std::cout << labels[i] << " last bin: " << lastBinContent << std::endl;
-    }
+    */
 
     c1->cd(4);
     plotSimple(
@@ -688,9 +718,9 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     c1->cd(16);
     plotSimple(
         htrkPt, "trkPt", labels,
-        "p_{T} [GeV/c]", -1, -1,
-        "Counts", -1, -1,
-        false, false
+        "p_{T} [GeV/c]", 0, 7,
+        "Counts", 0.1, 6e5,
+        false, true
     );
 
     c1->cd(17);
@@ -713,8 +743,8 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     plotSimple(
         htrkPt_eta1, "trkPt_Eta1", labels,
         "p_{T} [GeV/c]", -1, -1,
-        "Counts", -1, -1,
-        false, false
+        "Counts", 0.1, 6e5,
+        false, true
     );
 
     c1->cd(20);
@@ -752,7 +782,7 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     plotSimple(
         hHFEMaxPlus, "HFEMaxPlus", labels,
         "HF E^{+} Max [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 1000,
         false, false
     );
 
@@ -760,7 +790,7 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     plotSimple(
         hHFEMaxPlus2, "HFEMaxPlus2", labels,
         "HF E^{+} Max 2 [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 1000,
         false, false
     );
 
@@ -768,7 +798,7 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     plotSimple(
         hHFEMaxPlus3, "HFEMaxPlus3", labels,
         "HF E^{+} Max 3 [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 1000,
         false, false
     );
 
@@ -776,7 +806,7 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     plotSimple(
         hHFEMaxMinus, "HFEMaxMinus", labels,
         "HF E^{-} Max [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 1000,
         false, false
     );
 
@@ -784,7 +814,7 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     plotSimple(
         hHFEMaxMinus2, "HFEMaxMinus2", labels,
         "HF E^{-} Max 2 [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 1000,
         false, false
     );
 
@@ -792,7 +822,7 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
     plotSimple(
         hHFEMaxMinus3, "HFEMaxMinus3", labels,
         "HF E^{-} Max 3 [GeV]", -1, -1,
-        "Counts", -1, -1,
+        "Counts", 0, 1000,
         false, false
     );
 
@@ -1026,5 +1056,67 @@ void plotComparison(const char* forestInput =   "output/skimValidation_forest.ro
 
     // Save as png
     c4->SaveAs(Form("%s-4.png", output));
+
+
+    TCanvas* c5 = new TCanvas("c5", "c5", 2400, 1800);
+    c5->Divide(3, 3);
+
+    c5->cd(1);
+    plotSimple(
+        htrkPassChargedHadron_Loose, "trkPassChargedHadron_Loose", labels,
+        "Loose Charged Hadron Tracks", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c5->cd(2);
+    plotSimple(
+        htrkPassChargedHadron_Tight, "trkPassChargedHadron_Tight", labels,
+        "Tight Charged Hadron Tracks", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c5->cd(3);
+    plotSimple(
+        htrkPassChargedHadron_Nominal, "trkPassChargedHadron_Nominal", labels,
+        "Nominal Charged Hadron Tracks", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c5->cd(4);
+    plotSimple(
+        trackingEfficiency_Loose, "trackingEfficiency_Loose", labels,
+        "Tracking Efficiency Loose", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c5->cd(5);
+    plotSimple(
+        trackingEfficiency_Tight, "trackingEfficiency_Tight", labels,
+        "Tracking Efficiency Tight", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c5->cd(6);
+    plotSimple(
+        trackingEfficiency_Nominal, "trackingEfficiency_Nominal", labels,
+        "Tracking Efficiency Nominal", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c5->cd(7);
+    plotSimple(
+        trackWeight, "trackWeight", labels,
+        "Track Weight", -1, -1,
+        "Counts", -1, -1,
+        false, false
+    );
+
+    c5->SaveAs(Form("%s-5.png", output));
 
 }

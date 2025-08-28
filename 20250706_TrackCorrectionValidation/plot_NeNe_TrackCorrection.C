@@ -6,17 +6,12 @@
 
 #include "include/plotting.h" // Kyle's plotting utilities
 
-void plot_OO_TrackCorrection() {
+void plot_NeNe_TrackCorrection() {
 
-    // OO official
-    //const char* input =   "../../MITHIGAnalysis2024/CommonCode/root/Eff_OO_2025_PythiaHijing_QCD_pThat15_NoPU_pThatweight_2D_Nominal_Official.root";
-    //const char* input_Fak =   "../../MITHIGAnalysis2024/CommonCode/root/Eff_OO_2025_Hijing_MB_NoPU_2D_Nominal_Official.root";
-    //const char* output =  "plots/OO_trackCorrection_Nominal_Official.root";
-
-    const char* input =   "../../MITHIGAnalysis2024/CommonCode/root/Eff_OO_2025_Hijing_MB_NoPU_2D_Nominal_Official.root";
-    const char* input_Fak =   "../../MITHIGAnalysis2024/CommonCode/root/Eff_OO_2025_Hijing_MB_NoPU_2D_Nominal_Official.root";
-    const char* output =  "plots/20250802_Eff_OO_2025_Hijing_MB_NoPU_2D_Nominal_Official.root";
-
+    // NeNe private
+    const char* input =   "../../MITHIGAnalysis2024/CommonCode/root/PrivateNeNeMC_Hijing_5p36TeV.root";
+    const char* input_Fak =   "../../MITHIGAnalysis2024/CommonCode/root/PrivateNeNeMC_Hijing_5p36TeV.root";
+    const char* output =  "plots/20250802_PrivateNeNeMC_Hijing_5p36TeV";
 
     TFile* fin = TFile::Open(input, "READ");
     if (!fin || fin->IsZombie()) {
@@ -30,10 +25,10 @@ void plot_OO_TrackCorrection() {
         return;
     }
 
-    TH2F* hEff = (TH2F*)fin->Get("hEff_2D");
-    TH2F* hMul = (TH2F*)fin->Get("hMul_2D");
-    TH2F* hFak = (TH2F*)fin_Fak->Get("hFak_2D");
-    TH2F* hSec = (TH2F*)fin->Get("hSec_2D");
+    TH2F* hEff = (TH2F*)fin->Get("rEff");
+    TH2F* hMul = (TH2F*)fin->Get("rMul");
+    TH2F* hFak = (TH2F*)fin_Fak->Get("rFak");
+    TH2F* hSec = (TH2F*)fin->Get("rSec");
 
     // Calculate total correction: (1 - fake) * (1 - secondary) / (efficiency * (1 + multipleReco))
     TH2F* hTotal = (TH2F*)hEff->Clone("hTotal");

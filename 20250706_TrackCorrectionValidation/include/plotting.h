@@ -3,12 +3,12 @@
 #include <TH2D.h>
 #include <TF1.h>
 #include <iostream>
+#include "MITHIG_CMSStyle.h"
 
-const int ccolors[14] = {
+const int ccolors[13] = {
     kBlue+2,     // deep blue
     kAzure+7,    // cyan
     kTeal+3,     // teal
-    kGreen+2,    // green
     kSpring+7,   // turquoise-green
     kOrange+7,   // orange (avoiding yellow)
     kRed,        // red
@@ -85,6 +85,28 @@ void plotRatioLogy(vector<TH1*> hists, const char* title, vector<string> labels,
     pad2->SetBottomMargin(0.2);
     pad2->Draw();
 
+    // Find global min/max for all hists in the visible x range
+    double global_min = 1e30, global_max = -1e30;
+    for (size_t ih = 0; ih < hists.size(); ++ih) {
+        TH1* hist = hists[ih];
+        double x1 = (xmin < xmax) ? xmin : hist->GetXaxis()->GetXmin();
+        double x2 = (xmin < xmax) ? xmax : hist->GetXaxis()->GetXmax();
+        int binmin = hist->GetXaxis()->FindBin(x1);
+        int binmax = hist->GetXaxis()->FindBin(x2);
+        for (int i = binmin; i <= binmax; ++i) {
+            double val = hist->GetBinContent(i);
+            if (val < global_min) global_min = val;
+            if (val > global_max) global_max = val;
+        }
+    }
+    // Add some margin
+    double margin;
+    if (logy) {
+        margin = exp((log(global_max) - log((global_min > 0) ? global_min : 1)) * 1.2);
+    } else {
+        margin = 0.2 * (global_max - global_min);
+    }
+
     for (int i = 0; i < hists.size(); i++) {
         pad1->cd();
 
@@ -95,9 +117,24 @@ void plotRatioLogy(vector<TH1*> hists, const char* title, vector<string> labels,
         hist->GetXaxis()->SetTitle(xTitle);
         hist->GetXaxis()->SetRangeUser(xmin, xmax);
         hist->GetYaxis()->SetTitle(yTitle);
-        hist->GetYaxis()->SetRangeUser(ymin, ymax);
         hist->GetYaxis()->SetTitleSize(0.05);
         hist->SetLineColor(ccolors[i]);
+
+        // Auto-scale y axis if ymin < ymax, otherwise use global min/max
+        if (ymin < ymax) {
+            // If logy, ensure ymin > 0
+            if (logy && ymin <= 0) {
+            hist->GetYaxis()->SetRangeUser(1, ymax);
+            } else {
+            hist->GetYaxis()->SetRangeUser(ymin, ymax);
+            }
+        } else {
+            if (logy && global_min-margin <= 0) {
+                hist->GetYaxis()->SetRangeUser(1, global_max + margin);
+            } else {
+                hist->GetYaxis()->SetRangeUser(global_min - margin, global_max + margin);
+            }
+        }
 
         if (i == baseline) {
             hist->Draw("E SAME");
@@ -153,12 +190,13 @@ void plotRatioLogy(vector<TH1*> hists, const char* title, vector<string> labels,
 void plot2D(TH2* hist, const char* title,
     const char* xTitle, double xmin, double xmax,
     const char* yTitle, double ymin, double ymax,
-    bool logz = true) {
+    const char* zTitle, double zmin, double zmax,
+    bool logx = false, bool logy = true, bool logz = false) {
 
     TPad *pad1 = new TPad(title, title, 0, 0, 1, 1);
     pad1->SetBottomMargin(0.18); // Increase bottom margin for x-axis labels/ticks
-    pad1->SetLogx(0);
-    pad1->SetLogy(0);
+    pad1->SetLogx(logx);
+    pad1->SetLogy(logy);
     pad1->SetLogz(logz);
     pad1->Draw();
     pad1->cd();
@@ -174,6 +212,10 @@ void plot2D(TH2* hist, const char* title,
     hist->GetYaxis()->SetTitleSize(0.05);
     hist->GetYaxis()->SetLabelSize(0.045);
     hist->GetYaxis()->SetRangeUser(ymin, ymax);
+    hist->GetZaxis()->SetTitle(zTitle); // Remove z axis title
+    hist->GetZaxis()->SetTitleSize(0.05);
+    hist->GetZaxis()->SetLabelSize(0.045);
+    hist->GetZaxis()->SetRangeUser(zmin, zmax);
 
     hist->Draw("COLZ");
 }
@@ -190,9 +232,9 @@ void plotSimple(vector<TH1*> hists, const char* title, vector<string> labels,
     pad1->Draw();
     pad1->cd();
 
-    TLegend *leg = new TLegend(0.68, 0.75, 0.58, 0.85); // smaller, upper right
-    leg->SetBorderSize(0);
-    leg->SetTextSize(0.035);
+    TLegend *leg = new TLegend(0.65, 0.7, 0.85, 0.87);
+    leg->SetBorderSize(0); // Remove legend box
+    leg->SetTextSize(0.025); // Reduce font size
 
     double global_min = 1e30, global_max = -1e30;
 
@@ -210,7 +252,13 @@ void plotSimple(vector<TH1*> hists, const char* title, vector<string> labels,
         }
     }
     // Add some margin
-    double margin = 0.2 * (global_max - global_min);
+    double margin;
+    if (logy) {
+        margin = exp((log(global_max) - log((global_min > 0) ? global_min : 1)) * 1.2);
+        cout<<"Global min: " << global_min << ", Global max: " << global_max << ", Margin: " << margin << endl;
+    } else {
+        margin = 0.2 * (global_max - global_min);
+    }
 
     for (size_t ih = 0; ih < hists.size(); ++ih) {
         TH1* hist = hists[ih];
@@ -234,9 +282,18 @@ void plotSimple(vector<TH1*> hists, const char* title, vector<string> labels,
 
         // Auto-scale y axis if ymin < ymax, otherwise use global min/max
         if (ymin < ymax) {
+            // If logy, ensure ymin > 0
+            if (logy && ymin <= 0) {
+            hist->GetYaxis()->SetRangeUser(1, ymax);
+            } else {
             hist->GetYaxis()->SetRangeUser(ymin, ymax);
+            }
         } else {
-            hist->GetYaxis()->SetRangeUser(global_min - margin, global_max + margin);
+            if (logy && global_min <= 0) {
+                hist->GetYaxis()->SetRangeUser(1, global_max + margin);
+            } else {
+                hist->GetYaxis()->SetRangeUser(global_min - margin, global_max + margin);
+            }
         }
 
         hist->SetLineColor(scolors[ih]);
@@ -283,3 +340,289 @@ void plotSimple(vector<TH1*> hists, const char* title, vector<string> labels,
     leg->Draw("SAME");
 }
 
+void LabelBinContent(TH1* hist) {
+  for (int bin = 1; bin <= hist->GetNbinsX(); ++bin) {
+    double x = hist->GetBinCenter(bin);
+    double y = hist->GetBinContent(bin);
+    double y_offset = (y > 0) ? y + 0.03 * (hist->GetMaximum() - hist->GetMinimum()) : 0.03 * (hist->GetMaximum() - hist->GetMinimum());
+    TLatex latex;
+    latex.SetTextAlign(22);
+    latex.SetTextSize(0.027);
+    latex.DrawLatex(x, y_offset, Form("%.0f", y));
+  }
+}
+
+TPad* plotCMSSimple(TCanvas* c, vector<TH1*> hists, const char* title, vector<string> labels,
+    vector<Int_t> linecolors, vector<Int_t> linestyles, vector<Int_t> markercolors, vector<Int_t> markerstyles,
+    const char* xTitle, double xmin, double xmax,
+    const char* yTitle, double ymin, double ymax,
+    bool logx = false, bool logy = false,
+    bool binnums = false) {
+
+    // Get the canvas pad to pass to other functions
+    TPad* pad1 = (TPad*) c->GetPad(0);
+    pad1->cd();
+    logy ? pad1->SetLogy() : pad1->SetLogy(0);
+    logx ? pad1->SetLogx() : pad1->SetLogx(0);
+    
+    // >>> Apply the CMS TDR style <<<
+    SetTDRStyle();
+
+    TLegend* leg = new TLegend(0.25, 0.7, 0.68, 0.85);
+    leg->SetBorderSize(0);
+    leg->SetFillStyle(0);
+    leg->SetTextFont(42);
+    leg->SetTextSize(0.035);
+
+    // Find global min/max for all hists in the visible x range
+    double global_min = 1e30, global_max = -1e30;
+    for (size_t ih = 0; ih < hists.size(); ++ih) {
+        TH1* hist = hists[ih];
+        double x1 = (xmin < xmax) ? xmin : hist->GetXaxis()->GetXmin();
+        double x2 = (xmin < xmax) ? xmax : hist->GetXaxis()->GetXmax();
+        int binmin = hist->GetXaxis()->FindBin(x1);
+        int binmax = hist->GetXaxis()->FindBin(x2);
+        for (int i = binmin; i <= binmax; ++i) {
+            double val = hist->GetBinContent(i);
+            if (val < global_min) global_min = val;
+            if (val > global_max) global_max = val;
+        }
+    }
+    // Add some margin
+    double margin;
+    if (logy) {
+        margin = exp((log(global_max) - log((global_min > 0) ? global_min : 1)) * 1.2);
+    } else {
+        margin = 0.2 * (global_max - global_min);
+    }
+
+    for (int i = 0; i < hists.size(); i++) {
+
+        TH1* hist = hists[i];
+
+        hist->SetLineColor(linecolors[i]);
+        if (linestyles[i] == 0) hist->SetLineStyle(1);
+        else if (linestyles[i] > 0) hist->SetLineStyle(linestyles[i]);
+        hist->SetMarkerColor(markercolors[i]);
+        hist->SetMarkerStyle(markerstyles[i]);
+        if (linestyles[i] == 0) hist->SetLineWidth(3);
+        else if (linestyles[i] > 0) hist->SetLineWidth(2);
+
+        hist->GetXaxis()->SetTitle(xTitle);
+        hist->GetXaxis()->SetRangeUser(xmin, xmax);
+        hist->GetYaxis()->SetTitle(yTitle);
+        hist->GetYaxis()->SetTitleSize(0.04);
+
+        // Auto-scale y axis if ymin < ymax, otherwise use global min/max
+        if (ymin < ymax) {
+            // If logy, ensure ymin > 0
+            if (logy && ymin <= 0) {
+            hist->GetYaxis()->SetRangeUser(1, ymax);
+            } else {
+            hist->GetYaxis()->SetRangeUser(ymin, ymax);
+            }
+        } else {
+            if (logy && global_min-margin <= 0) {
+                hist->GetYaxis()->SetRangeUser(1, global_max + margin);
+            } else {
+                hist->GetYaxis()->SetRangeUser(global_min - margin, global_max + margin);
+            }
+        }
+
+        if (binnums) hist->Draw("SAME TEXT0");
+        else if (linestyles[i] == 0) hist->Draw("SAME");
+        else if (linestyles[i] == -1) hist->Draw("P SAME");
+        else hist->Draw("HIST SAME");
+        
+        if (linestyles[i] == 0) leg->AddEntry(hist, Form("%s", labels[i].c_str()), "pl");
+        else if (linestyles[i] == -1) leg->AddEntry(hist, Form("%s", labels[i].c_str()), "p");
+        else leg->AddEntry(hist, Form("%s", labels[i].c_str()), "l");
+    }
+    leg->Draw("SAME");
+
+    return pad1; // Return the pad for further customization if needed
+}
+
+
+TPad* plotCMSRatio(vector<TH1*> hists, const char* title, vector<string> labels,
+    vector<Int_t> linecolors, vector<Int_t> linestyles, vector<Int_t> markercolors, vector<Int_t> markerstyles,
+    const char* xTitle, double xmin, double xmax,
+    const char* yTitle, double ymin, double ymax,
+    const char* rTitle, double rmin, double rmax,
+    int baseline = 0, bool logx = false, bool logy = false,
+    bool errorBars = true) {
+
+    // linestyle options
+    // -1: no line, only markers [homemade]
+    // 0: solid histogram with point in center
+    // 1: solid histogram
+    // 2: dashed histogram
+
+    // Get the canvas pad to pass to other functions
+    // Leave a 50% larger border around the figure within the canvas
+    double border = 0.06; // 7.5% border on all sides (50% larger than default 5%)
+    TPad *pad1 = new TPad(title, title, border, 0.25 + border, 1.0 - border, 1.0 - border);
+    pad1->SetBottomMargin(0);
+    logy ? pad1->SetLogy() : pad1->SetLogy(0);
+    logx ? pad1->SetLogx() : pad1->SetLogx(0);
+    pad1->Draw();
+    TPad *pad2 = new TPad(title, title, border, border, 1.0 - border, 0.25 + border);
+    pad2->SetTopMargin(0);
+    pad2->SetBottomMargin(0.2);
+    logx ? pad2->SetLogx() : pad2->SetLogx(0);
+    pad2->Draw();
+    
+    // >>> Apply the CMS TDR style <<<
+    SetTDRStyle();
+
+    TLegend* leg = new TLegend(0.55, 0.7, 0.78, 0.85);
+    leg->SetBorderSize(0);
+    leg->SetFillStyle(0);
+    leg->SetTextFont(42);
+    leg->SetTextSize(0.035);
+
+    // Find global min/max for all hists in the visible x range
+    double global_min = 1e30, global_max = -1e30;
+    for (size_t ih = 0; ih < hists.size(); ++ih) {
+        TH1* hist = hists[ih];
+        double x1 = (xmin < xmax) ? xmin : hist->GetXaxis()->GetXmin();
+        double x2 = (xmin < xmax) ? xmax : hist->GetXaxis()->GetXmax();
+        int binmin = hist->GetXaxis()->FindBin(x1);
+        int binmax = hist->GetXaxis()->FindBin(x2);
+        for (int i = binmin; i <= binmax; ++i) {
+            double val = hist->GetBinContent(i);
+            if (val < global_min) global_min = val;
+            if (val > global_max) global_max = val;
+        }
+    }
+    // Add some margin
+    double margin;
+    if (logy) {
+        margin = exp((log(global_max) - log((global_min > 0) ? global_min : 1)) * 1.2);
+    } else {
+        margin = 0.2 * (global_max - global_min);
+    }
+
+    for (int i = 0; i < hists.size(); i++) {
+        pad1->cd();
+
+        TH1* hist = hists[i];
+
+        if (linestyles[i] == -1) hist->SetLineColorAlpha(0, 0);
+        else hist->SetLineColor(linecolors[i]);
+        if (linestyles[i] == 0) hist->SetLineStyle(1);
+        else if (linestyles[i] > 0) hist->SetLineStyle(linestyles[i]);
+        hist->SetMarkerColor(markercolors[i]);
+        hist->SetMarkerStyle(markerstyles[i]);
+        if (linestyles[i] == 0) hist->SetLineWidth(3);
+        else if (linestyles[i] > 0) hist->SetLineWidth(2);
+
+        hist->GetXaxis()->SetTitle(xTitle);
+        hist->GetXaxis()->SetRangeUser(xmin, xmax);
+        hist->GetYaxis()->SetTitle(yTitle);
+        hist->GetYaxis()->SetTitleSize(0.05);
+        hist->GetYaxis()->SetTitleOffset(0.7);
+
+        // Auto-scale y axis if ymin < ymax, otherwise use global min/max
+        if (ymin < ymax) {
+            // If logy, ensure ymin > 0
+            if (logy && ymin <= 0) {
+            hist->GetYaxis()->SetRangeUser(1, ymax);
+            } else {
+            hist->GetYaxis()->SetRangeUser(ymin, ymax);
+            }
+        } else {
+            if (logy && global_min-margin <= 0) {
+                hist->GetYaxis()->SetRangeUser(1, global_max + margin);
+            } else {
+                hist->GetYaxis()->SetRangeUser(global_min - margin, global_max + margin);
+            }
+        }
+
+        if (linestyles[i] == 0) hist->Draw("SAME");
+        else if (linestyles[i] == -1) hist->Draw("P SAME");
+        else hist->Draw("HIST SAME");
+        
+        if (linestyles[i] == 0) leg->AddEntry(hist, Form("%s", labels[i].c_str()), "pl");
+        else if (linestyles[i] == -1) leg->AddEntry(hist, Form("%s", labels[i].c_str()), "p");
+        else leg->AddEntry(hist, Form("%s", labels[i].c_str()), "l");
+
+        pad2->cd();
+        if (i != baseline) {
+            TH1* hRatio = (TH1*)hist->Clone(Form("ratio_%s_%d", title, i));
+            hRatio->Divide(hists[baseline]);
+            hRatio->GetXaxis()->SetTitle(xTitle);
+            hRatio->GetXaxis()->SetTitleSize(0.1);
+            hRatio->GetXaxis()->SetLabelSize(0.08);
+            hRatio->GetXaxis()->SetTitleOffset(1);
+            hRatio->GetYaxis()->SetTitle(rTitle);
+            hRatio->GetYaxis()->SetRangeUser(rmin, rmax);
+            hRatio->GetYaxis()->SetTitleSize(0.08);
+            hRatio->GetYaxis()->SetLabelSize(0.06);
+            hRatio->GetYaxis()->SetTitleOffset(0.5);
+            hRatio->SetLineColor(linecolors[i]);
+            hRatio->SetLineStyle(linestyles[i]);
+            hRatio->SetLineWidth(2);
+            hRatio->Draw("HIST SAME");
+
+            // Draw error bars on the ratio plot if requested
+            if (errorBars) {
+                setErrors(hRatio, hist, hists.at(baseline));
+                hRatio->Draw("E SAME");
+            } else {
+                hRatio->Draw("HIST SAME");
+            }
+
+            double xlow = hRatio->GetXaxis()->GetBinLowEdge(hRatio->GetXaxis()->GetFirst());
+            double xhigh = hRatio->GetXaxis()->GetBinUpEdge(hRatio->GetXaxis()->GetLast());
+            TLine *line = new TLine(xlow, 1, xhigh, 1);
+            line->SetLineColor(kGray+2);
+            line->SetLineStyle(2);
+            line->Draw("SAME");
+        }
+    }
+    pad1->cd();
+    leg->Draw("SAME");
+
+    return pad1; // Return the main pad for further customization if needed
+}
+
+TPad* plotCMSSimple2D(TCanvas* c, TH2* hist, const char* title,
+    const char* xTitle, double xmin, double xmax,
+    const char* yTitle, double ymin, double ymax,
+    const char* zTitle, double zmin, double zmax,
+    bool logx = false, bool logy = false,
+    bool logz = false,
+    bool binnums = false) {
+
+    // Get the canvas pad to pass to other functions
+    TPad* pad1 = (TPad*) c->GetPad(0);
+    pad1->cd();
+    logy ? pad1->SetLogy() : pad1->SetLogy(0);
+    logx ? pad1->SetLogx() : pad1->SetLogx(0);
+    logz ? pad1->SetLogz() : pad1->SetLogz(0);
+    pad1->SetRightMargin(10);
+    
+    // >>> Apply the CMS TDR style <<<
+    SetTDRStyle();
+
+    pad1->SetRightMargin(0.18); // Increase right margin for z-axis labels
+
+    hist->GetZaxis()->SetTitle(zTitle);
+    hist->GetXaxis()->SetTitle(xTitle);
+    hist->GetXaxis()->SetRangeUser(xmin, xmax);
+    hist->GetYaxis()->SetTitle(yTitle);
+    hist->GetYaxis()->SetRangeUser(ymin, ymax);
+    hist->GetZaxis()->SetTitle(zTitle);
+    hist->GetZaxis()->SetRangeUser(zmin, zmax);
+
+    if (binnums) {
+        gStyle->SetPalette(kBird);
+        gStyle->SetPaintTextFormat("1.2f");
+        hist->Draw("COLZ text e");
+    } else {
+        hist->Draw("COLZ");
+    }
+
+    return pad1; // Return the pad for further customization if needed
+}

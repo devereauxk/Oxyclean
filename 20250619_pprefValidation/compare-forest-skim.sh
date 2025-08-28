@@ -1,6 +1,6 @@
 forestFile=/eos/cms/store/group/phys_heavyions/vpant/ppref2024output/PPRefZeroBiasPlusForward4/crab_ppref2024/250324_080237/0000/HiForestMiniAOD_1.root
-skimFile=/data00/kdeverea/OOsamples/Skims/20250701_Skim_ppref2024_debug.root
-name=pprefdebug
+skimFile=/home/kdeverea/MITHIGAnalysis2024/SampleGeneration/20250518_ForestReducer_RAAOxygenOxygen/temppp.root
+name=skimmerOverhaul_pprefdebug
 
 # event cut, track cut
 # forest

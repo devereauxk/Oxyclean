@@ -30,18 +30,6 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     hNEvtPassCuts->GetXaxis()->SetBinLabel(5, "+ !isFakeVtx");
     hNEvtPassCuts->GetXaxis()->SetBinLabel(6, "+ abs(VZ)<15");
 
-    TH1D* hNTrkPassCuts = new TH1D("hNTrkPassCuts", "Number of tracks passing cuts", 10, 0.5, 10.5);
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(1, "Total Tracks");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(2, "+ nTrk");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(3, "+ Track Charge");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(4, "+ High Purity");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(5, "+ pT>0.1");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(6, "+ Relative Uncertainty < 0.1");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(7, "+ Dxy/Err < 3");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(8, "+ Dz/Err < 3");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(9, "+ |Eta| < 2.4");
-    hNTrkPassCuts->GetXaxis()->SetBinLabel(10, "+ pT < 500 GeV");
-
     TH1D* hnRun =           new TH1D("hnRun", "Run Number", 10, 0, 10);
     TH1D* hnEv =            new TH1D("hnEv", "Event Number", 50, 0, 100);
     TH1D* hnLumi =          new TH1D("hnLumi", "Lumi Section", 50, 0, 1000);
@@ -87,6 +75,14 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     TH3D* AllVXYZ =   new TH3D("AllVXYZ", "All Vertices XYZ", 50, -0.2, 0.2, 50, -0.2, 0.2, 50, -25, 25);
     TH3D* AllVXYZErr = new TH3D("AllVXYZErr", "All Vertices XYZ Error", 50, 0, 0.02, 50, 0, 0.02, 50, 0, 0.01);
 
+    TH1D* htrkPassChargedHadron_Nominal = new TH1D("htrkPassChargedHadron_Nominal", "Track Pass Charged Hadron Nominal", 2, -0.5, 1.5);
+    TH1D* htrkPassChargedHadron_Loose = new TH1D("htrkPassChargedHadron_Loose", "Track Pass Charged Hadron Loose", 2, -0.5, 1.5);
+    TH1D* htrkPassChargedHadron_Tight = new TH1D("htrkPassChargedHadron_Tight", "Track Pass Charged Hadron Tight", 2, -0.5, 1.5);
+    TH1D* htrackingEfficiency_Nominal = new TH1D("htrackingEfficiency_Nominal", "Tracking Efficiency Nominal", 100, 0, 5);
+    TH1D* htrackingEfficiency_Loose = new TH1D("htrackingEfficiency_Loose", "Tracking Efficiency Loose", 100, 0, 5);
+    TH1D* htrackingEfficiency_Tight = new TH1D("htrackingEfficiency_Tight", "Tracking Efficiency Tight", 100, 0, 5);
+    TH1D* htrackWeight = new TH1D("htrackWeight", "Track Weight", 100, 0, 5);
+
     // Define branch variables
     TTree *tree;
 
@@ -97,7 +93,6 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     Long64_t Event;
     bool isFakeVtx_skim;
     int nTracksVtx_skim;
-    Int_t nTrk;
 
     int ClusterCompatibilityFilter, PVFilter;
 
@@ -113,9 +108,14 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     std::vector<float>  *trkDxyAssociatedVtx = nullptr, *trkDxyErrAssociatedVtx = nullptr,
                         *trkDzAssociatedVtx = nullptr, *trkDzErrAssociatedVtx = nullptr,
                         *trkAssociatedVtxIndx = nullptr;
-    std::vector<bool>   *isFakeVtx = nullptr, *trkPassChargedHadron_Nominal = nullptr;
+    std::vector<bool>   *isFakeVtx = nullptr;
     std::vector<int>    *pfId = nullptr, *AllnTracksVtx = nullptr, *nTracksVtx = nullptr;
     std::vector<float>  *chi2Vtx = nullptr, *ndofVtx = nullptr;
+
+    std::vector<float> *trackingEfficiency_Nominal = nullptr, *trackingEfficiency_Loose = nullptr,
+                        *trackingEfficiency_Tight = nullptr, *trackWeight = nullptr;
+    std::vector<bool> *trkPassChargedHadron_Nominal = nullptr, *trkPassChargedHadron_Loose = nullptr,
+                        *trkPassChargedHadron_Tight = nullptr;
 
     // if forest, get forest
     if (isForest) {
@@ -130,7 +130,6 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->SetBranchAddress("nEv", &nEv);
         tree->SetBranchAddress("nLumi", &nLumi);
         tree->SetBranchAddress("nVtx", &nVtx);
-        tree->SetBranchAddress("nTrk", &nTrk);
         tree->SetBranchAddress("hiBin", &hiBin);
         tree->SetBranchAddress("Npart", &Npart);
         tree->SetBranchAddress("Ncoll", &Ncoll);
@@ -181,7 +180,6 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->SetBranchAddress("Event", &Event);
         tree->SetBranchAddress("Lumi", &nLumi);
         tree->SetBranchAddress("nVtx", &nVtx);
-        tree->SetBranchAddress("nTrk", &nTrk);
         tree->SetBranchAddress("hiBin", &hiBin);
         tree->SetBranchAddress("Npart", &Npart);
         tree->SetBranchAddress("Ncoll", &Ncoll);
@@ -237,6 +235,12 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         tree->SetBranchAddress("trkDzErrAssociatedVtx", &trkDzErrAssociatedVtx);
         tree->SetBranchAddress("trkAssociatedVtxIndx", &trkAssociatedVtxIndx);
         tree->SetBranchAddress("trkPassChargedHadron_Nominal", &trkPassChargedHadron_Nominal);
+        tree->SetBranchAddress("trkPassChargedHadron_Loose", &trkPassChargedHadron_Loose);
+        tree->SetBranchAddress("trkPassChargedHadron_Tight", &trkPassChargedHadron_Tight);
+        tree->SetBranchAddress("trackingEfficiency_Nominal", &trackingEfficiency_Nominal);
+        tree->SetBranchAddress("trackingEfficiency_Loose", &trackingEfficiency_Loose);
+        tree->SetBranchAddress("trackingEfficiency_Tight", &trackingEfficiency_Tight);
+        tree->SetBranchAddress("trackWeight", &trackWeight);
 
     }
 
@@ -361,64 +365,33 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
         for (int j = 0; j < trkPt->size(); ++j) {
 
             // apply track cuts
-            if (applyTrackCuts && isForest) {
+            if (applyTrackCuts) {
 
-                hNTrkPassCuts->Fill(1);
-
-                if (j > nTrk)
+                if(abs(trkCharge->at(j)) != 1)
                     continue;
-                hNTrkPassCuts->Fill(2);
 
-                if (abs(trkCharge->at(j)) != 1)
+                if(highPurity->at(j) == false)
                     continue;
-                hNTrkPassCuts->Fill(3);
+                
+                if (trkPt->at(j) < 0.1)
+                    continue;
+                
+                double RelativeUncertainty = trkPtError->at(j)/ trkPt->at(j);
+                if(trkPt->at(j) > 10 && RelativeUncertainty > 0.1)
+                    continue;
 
-                if (!highPurity->at(j))
+                if(fabs(trkDxyAssociatedVtx->at(j)) / trkDxyErrAssociatedVtx->at(j) > 3)
                     continue;
-                hNTrkPassCuts->Fill(4);
 
-                if (trkPt->at(j) < 3)
+                if(fabs(trkDzAssociatedVtx->at(j)) / trkDzErrAssociatedVtx->at(j) > 3)
                     continue;
-                hNTrkPassCuts->Fill(5);
-
-                double RelativeUncertainty = trkPtError->at(j) / trkPt->at(j);
-                if (trkPt->at(j) > 10 && RelativeUncertainty > 0.1)
-                    continue;
-                hNTrkPassCuts->Fill(6);
-
-                if (fabs(trkDxyAssociatedVtx->at(j)) / trkDxyErrAssociatedVtx->at(j) > 3)
-                    continue;
-                hNTrkPassCuts->Fill(7);
-
-                if (fabs(trkDzAssociatedVtx->at(j)) / trkDzErrAssociatedVtx->at(j) > 3)
-                    continue;
-                hNTrkPassCuts->Fill(8);
 
                 if (fabs(trkEta->at(j)) > 2.4)
                     continue;
-                hNTrkPassCuts->Fill(9);
 
                 if (trkPt->at(j) > 500)
                     continue;
-                hNTrkPassCuts->Fill(10);
 
-            } else if (applyTrackCuts && !isForest) {
-                
-                hNTrkPassCuts->Fill(1); // Total Tracks
-
-                if (!trkPassChargedHadron_Nominal->at(j)) {
-                    continue; // track does not pass charged had
-                } else {    
-                    hNTrkPassCuts->Fill(2); // nTrk
-                    hNTrkPassCuts->Fill(3); // Track Charge
-                    hNTrkPassCuts->Fill(4);
-                    hNTrkPassCuts->Fill(5);
-                    hNTrkPassCuts->Fill(6);
-                    hNTrkPassCuts->Fill(7);
-                    hNTrkPassCuts->Fill(8);
-                    hNTrkPassCuts->Fill(9);
-                    hNTrkPassCuts->Fill(10); // nTrk  
-                }
             }
 
             htrkPtEtaHighPurity->Fill(trkPt->at(j), trkEta->at(j), highPurity->at(j));
@@ -435,6 +408,19 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
             htrkDzAssociatedVtx->Fill(trkDzAssociatedVtx->at(j));
             htrkDzErrAssociatedVtx->Fill(trkDzErrAssociatedVtx->at(j));
             htrkAssociatedVtxIndx->Fill(trkAssociatedVtxIndx->at(j));
+
+            if (!isForest) {
+                // fill tracking efficiency histograms
+                htrackingEfficiency_Nominal->Fill(trackingEfficiency_Nominal->at(j));
+                htrackingEfficiency_Loose->Fill(trackingEfficiency_Loose->at(j));
+                htrackingEfficiency_Tight->Fill(trackingEfficiency_Tight->at(j));
+                htrackWeight->Fill(trackWeight->at(j));
+
+                // fill charged hadron pass histograms
+                htrkPassChargedHadron_Nominal->Fill(trkPassChargedHadron_Nominal->at(j));
+                htrkPassChargedHadron_Loose->Fill(trkPassChargedHadron_Loose->at(j));
+                htrkPassChargedHadron_Tight->Fill(trkPassChargedHadron_Tight->at(j));
+            }
         }
 
         // determine leading 1st, 2nd, 3rd PF candidates
@@ -532,7 +518,13 @@ void skimValidation(const char* inputFile = "HiForestMiniAOD_Hijing_merged_DEBUG
     htrkDzAssociatedVtx->Write();
     htrkDzErrAssociatedVtx->Write();
     htrkAssociatedVtxIndx->Write();
-    hNTrkPassCuts->Write();
+    htrkPassChargedHadron_Nominal->Write();
+    htrkPassChargedHadron_Loose->Write();
+    htrkPassChargedHadron_Tight->Write();
+    htrackingEfficiency_Nominal->Write();
+    htrackingEfficiency_Loose->Write();
+    htrackingEfficiency_Tight->Write();
+    htrackWeight->Write();
 
     foutput->Close();
     finput->Close();
